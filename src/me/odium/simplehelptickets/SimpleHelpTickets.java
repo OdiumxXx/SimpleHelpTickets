@@ -143,7 +143,7 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
 
     if(cmd.getName().equalsIgnoreCase("helptickets")){ 
-      sender.sendMessage(ChatColor.BLUE + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
+      sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
       sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
       sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
       if(player.hasPermission("sht.admin")) {
@@ -155,7 +155,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 
     if(cmd.getName().equalsIgnoreCase("sht")){ 
       if(args.length == 0) {      
-        sender.sendMessage(ChatColor.BLUE + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
+        sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
         sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
         sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
         if(player.hasPermission("sht.admin")) {
@@ -182,9 +182,9 @@ public class SimpleHelpTickets extends JavaPlugin {
     // BEGIN /WARN COMMAND
     if(cmd.getName().equalsIgnoreCase("ticket")){     
       if(args.length == 0) {
-        sender.sendMessage(ChatColor.BLUE + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
+        sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
         sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-        sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
+//        sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
         if(player.hasPermission("sht.admin")) {
           sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
           sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
