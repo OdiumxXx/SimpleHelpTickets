@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 0.2
+version: 0.3
 commands:
    helptickets:
       description: Help Menu
@@ -24,7 +24,7 @@ commands:
       usage: /take <#>
    delticket:
       description: delete a help ticket
-      permission: sht.admin
+      permission: sht.delete
       usage: /delticket <#>
    closeticket:
       description: close a help ticket

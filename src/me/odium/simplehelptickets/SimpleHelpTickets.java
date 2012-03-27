@@ -102,23 +102,23 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-
-      Player player = event.getPlayer();
-      String name = player.getName();
-      if(!getStorageConfig().contains(name)) {
-        // Do Nothing
+    public void onPlayerJoin(PlayerJoinEvent event) {      
+      boolean ShowTicketsOnJoin = getConfig().getBoolean("ShowTicketsOnJoin");
+      if (ShowTicketsOnJoin == true) {
+        Player player = event.getPlayer();
+        if (player.hasPermission("sht.admin")) {
+          int ticklength = getStorageConfig().getStringList("tickets").size();
+          if (ticklength == 0) {
+            // DO NOTHING
+          } else if(ticklength > 0) {
+            player.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "There are currently " + ChatColor.GOLD + ticklength + ChatColor.GRAY + " open Help Tickets");
+          }
+        } 
       } else {
-        int size = getStorageConfig().getStringList(name+".warnings").size();
-
-        boolean BroadcastOnJoin = getConfig().getBoolean("BroadcastOnJoin"); // Check config allows broadcasting
-        if (BroadcastOnJoin == true) {
-          Bukkit.broadcastMessage(ChatColor.GRAY + "Player " + ChatColor.GOLD + name + ChatColor.GRAY + " has " + ChatColor.GOLD +  size + ChatColor.GRAY + " warnings.");
-        }
+        // Do Some Nothing
       }
-
     }
-  }  
+  }
 
   public String myGetPlayerName(String name) { 
     Player caddPlayer = getServer().getPlayerExact(name);
@@ -145,7 +145,6 @@ public class SimpleHelpTickets extends JavaPlugin {
     if(cmd.getName().equalsIgnoreCase("helptickets")){ 
       sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
       sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-      sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
       if(player.hasPermission("sht.admin")) {
         sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
         sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
@@ -157,7 +156,6 @@ public class SimpleHelpTickets extends JavaPlugin {
       if(args.length == 0) {      
         sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
         sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-        sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
         if(player.hasPermission("sht.admin")) {
           sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
           sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
@@ -249,21 +247,26 @@ public class SimpleHelpTickets extends JavaPlugin {
       java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
       java.util.List<String> userstickPB = getStorageConfig().getStringList("placedby");
       java.util.List<String> admin = getStorageConfig().getStringList("admin");
-      sender.sendMessage(ChatColor.GOLD + "--- Current Help Tickets ---"); 
-      for(int i = 0; i < userstickets.size(); ++i) {
-        String date = usersdates.get(i);
-        String ticket = userstickets.get(i);
-        String tickPB = userstickPB.get(i);
-        String tickadmin = admin.get(i);
-        if (tickadmin == "noone") {       
-          sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") " + ChatColor.GRAY + date + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
-        } else {
-          sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") "  + ChatColor.GREEN + " [" + tickadmin + "]" + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
+      sender.sendMessage(ChatColor.GOLD + "--- Current Help Tickets ---");
+      int usersticklength = getStorageConfig().getStringList("tickets").size();
+      if (usersticklength == 0) {
+        sender.sendMessage(ChatColor.WHITE + "There are currently no help tickets to display.");  
+      } else {
+        for(int i = 0; i < userstickets.size(); ++i) {
+          String date = usersdates.get(i);
+          String ticket = userstickets.get(i);
+          String tickPB = userstickPB.get(i);
+          String tickadmin = admin.get(i);
+          if (tickadmin.equals("noone")) {       
+            sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") " + ChatColor.GRAY + date + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
+          } else {
+            sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") "  + ChatColor.GREEN + " [" + tickadmin + "]" + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
+          }
         }
+        return true;
       }
-      return true;
     }
-
+    
     if(cmd.getName().equalsIgnoreCase("taketicket")){
       int ticketno = Integer.parseInt( args[0] );
       java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
@@ -304,7 +307,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 
     if(cmd.getName().equalsIgnoreCase("delticket")){
       if(args.length == 0) {        
-        sender.sendMessage(ChatColor.WHITE + "/dwarn <playername> <warningnumber>");
+        sender.sendMessage(ChatColor.WHITE + "/delticket <#>");
       } else if(args.length == 1) {
         int ticketno = Integer.parseInt( args[0] );
 
@@ -324,13 +327,13 @@ public class SimpleHelpTickets extends JavaPlugin {
         getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
         getStorageConfig().set("admin", admin); // insert who placed the ticket
         saveStorageConfig();          
-        sender.sendMessage(ChatColor.GREEN + "ticket " + ticketno + " deleted");
+        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " deleted");
       }
     }      
 
     if(cmd.getName().equalsIgnoreCase("closeticket")){
       if(args.length == 0) {        
-        sender.sendMessage(ChatColor.WHITE + "/dwarn <playername> <warningnumber>");
+        sender.sendMessage(ChatColor.WHITE + "/closeticket <#>");
       } else if(args.length == 1) {
         int ticketno = Integer.parseInt( args[0] );
 
@@ -351,7 +354,7 @@ public class SimpleHelpTickets extends JavaPlugin {
         getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
         getStorageConfig().set("admin", admin); // insert who placed the ticket
         saveStorageConfig();          
-        sender.sendMessage("ticket " + ticketno + " deleted");
+        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " deleted");
         String tickuser = myGetPlayerName(target);
         if(this.getServer().getPlayer(tickuser) == null) {
           return true;  
