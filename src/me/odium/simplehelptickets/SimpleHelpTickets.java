@@ -189,6 +189,10 @@ public class SimpleHelpTickets extends JavaPlugin {
           sender.sendMessage(ChatColor.BLUE + "/closeticket <#>" + ChatColor.WHITE + " - Close a dealt with ticket");
         }
       } else {
+        if (player == null) {
+          sender.sendMessage("This command can only be run by a player");
+          return true;
+        }
         StringBuilder sb = new StringBuilder();
         for (String arg : args)
           sb.append(arg + " ");
@@ -268,6 +272,10 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
     
     if(cmd.getName().equalsIgnoreCase("taketicket")){
+      if (player == null) {
+        sender.sendMessage("This command can only be run by a player");
+        return true;
+      }
       int ticketno = Integer.parseInt( args[0] );
       java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
       java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
@@ -354,7 +362,7 @@ public class SimpleHelpTickets extends JavaPlugin {
         getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
         getStorageConfig().set("admin", admin); // insert who placed the ticket
         saveStorageConfig();          
-        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " deleted");
+        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed");
         String tickuser = myGetPlayerName(target);
         if(this.getServer().getPlayer(tickuser) == null) {
           return true;  
@@ -362,6 +370,13 @@ public class SimpleHelpTickets extends JavaPlugin {
           String admin1 = player.getDisplayName();
           Player target1 = this.getServer().getPlayer(tickuser);
           target1.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " has closed your help ticket");
+          Player[] players = Bukkit.getOnlinePlayers();
+          for(Player op: players){
+            if(op.hasPermission("sht.admin")) {
+              op.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " has closed ticket " + ChatColor.GOLD + ticketno);
+            }
+          }
+
         }
       }    
     }
