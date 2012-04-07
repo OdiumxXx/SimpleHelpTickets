@@ -362,7 +362,7 @@ public class SimpleHelpTickets extends JavaPlugin {
         getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
         getStorageConfig().set("admin", admin); // insert who placed the ticket
         saveStorageConfig();          
-        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed");
+         sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed");
         String tickuser = myGetPlayerName(target);
         if(this.getServer().getPlayer(tickuser) == null) {
           return true;  
