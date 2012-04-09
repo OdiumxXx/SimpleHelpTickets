@@ -1,3 +1,4 @@
 # Simple Help Tickets
 #
 ShowTicketsOnJoin: true
+NotifyAdminOnTicketClose: true
