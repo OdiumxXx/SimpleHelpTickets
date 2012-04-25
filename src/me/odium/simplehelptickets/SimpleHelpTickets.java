@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -143,30 +142,39 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
 
     if(cmd.getName().equalsIgnoreCase("helptickets")){ 
-      sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
-      sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-      if(player.hasPermission("sht.admin")) {
-        sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
-        sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
-        sender.sendMessage(ChatColor.BLUE + "/closeticket <#>" + ChatColor.WHITE + " - Close a dealt with ticket");
+      sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "SimpleHelpTickets" + " v" + getDescription().getVersion() + ChatColor.GOLD + " --");
+      sender.sendMessage(ChatColor.BLUE + " /ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket. [Stand @ Location]");
+      sender.sendMessage(ChatColor.BLUE + " /tickets" + ChatColor.WHITE + " - View Your Tickets.");
+      sender.sendMessage(ChatColor.BLUE + " /checkticket <#>" + ChatColor.WHITE + " - Check one of your ticket's info.");
+      sender.sendMessage(ChatColor.BLUE + " /closeticket <#>" + ChatColor.WHITE + " - Close one of your tickets.");
+      if(player.hasPermission("sht.admin") || player == null) {
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Admin Commands" + ChatColor.GOLD + " --");
+        sender.sendMessage(ChatColor.RED + " /tickets" + ChatColor.WHITE + " - List all tickets");
+        sender.sendMessage(ChatColor.RED + " /checkticket <#>" + ChatColor.WHITE + " - Check a ticket's info.");
+        sender.sendMessage(ChatColor.RED + " /taketicket <#>" + ChatColor.WHITE + " - Assign yourself to a ticket.");
+        sender.sendMessage(ChatColor.RED + " /replyticket" + ChatColor.WHITE + " - Reply to a Ticket.");
+        sender.sendMessage(ChatColor.RED + " /closeticket <#>" + ChatColor.WHITE + " - Close a ticket.");      
       }
     }
 
     if(cmd.getName().equalsIgnoreCase("sht")){ 
       if(args.length == 0) {      
-        sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
-        sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-        if(player.hasPermission("sht.admin")) {
-          sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
-          sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
-          sender.sendMessage(ChatColor.BLUE + "/closeticket <#>" + ChatColor.WHITE + " - Close a dealt with ticket");
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.GRAY + "SimpleHelpTickets" + " v" + getDescription().getVersion() + ChatColor.GOLD + " --");
+        sender.sendMessage(ChatColor.BLUE + " /ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket. [Stand @ Location]");
+        sender.sendMessage(ChatColor.BLUE + " /tickets" + ChatColor.WHITE + " - View Your Tickets.");
+        sender.sendMessage(ChatColor.BLUE + " /checkticket <#>" + ChatColor.WHITE + " - Check one of your ticket's info.");
+        sender.sendMessage(ChatColor.BLUE + " /closeticket <#>" + ChatColor.WHITE + " - Close one of your tickets.");
+        if(player.hasPermission("sht.admin") || player == null) {
+          sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.GRAY + "Admin Commands" + ChatColor.GOLD + " --");
+          sender.sendMessage(ChatColor.RED + " /tickets" + ChatColor.WHITE + " - List all tickets");
+          sender.sendMessage(ChatColor.RED + " /checkticket <#>" + ChatColor.WHITE + " - Check a ticket's info.");
+          sender.sendMessage(ChatColor.RED + " /taketicket <#>" + ChatColor.WHITE + " - Assign yourself to a ticket.");
+          sender.sendMessage(ChatColor.RED + " /replyticket" + ChatColor.WHITE + " - Reply to a Ticket.");
+          sender.sendMessage(ChatColor.RED + " /closeticket <#>" + ChatColor.WHITE + " - Close a ticket.");      
         }
         return true;
-      } else if (args.length == 1 && args[0].equalsIgnoreCase("version")) {         
-        sender.sendMessage(ChatColor.GOLD + "[" + getDescription().getName() + "] " + " Version: " + ChatColor.RED + getDescription().getVersion());
-        return true;     
       } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
-        if(player.hasPermission("sht.reload")) {
+        if(player.hasPermission("sht.reload") || player == null) {
           reloadConfig();
           sender.sendMessage(ChatColor.GREEN + "Config Reloaded!");
           return true;
@@ -177,26 +185,37 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
 
 
-    // BEGIN /WARN COMMAND
     if(cmd.getName().equalsIgnoreCase("ticket")){     
       if(args.length == 0) {
-        sender.sendMessage(ChatColor.GOLD + "-- SimpleHelpTickets" + " v" + getDescription().getVersion() + " --");
-        sender.sendMessage(ChatColor.BLUE + "/ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket");
-//        sender.sendMessage(ChatColor.GRAY + "If your help ticket requires an admin to see something, stand there when you set the ticket");
-        if(player.hasPermission("sht.admin")) {
-          sender.sendMessage(ChatColor.BLUE + "/tickets" + ChatColor.WHITE + " - Check Tickets");        
-          sender.sendMessage(ChatColor.BLUE + "/delticket <#>" + ChatColor.WHITE + " - Silently Delete a Ticket");
-          sender.sendMessage(ChatColor.BLUE + "/closeticket <#>" + ChatColor.WHITE + " - Close a dealt with ticket");
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "SimpleHelpTickets" + " v" + getDescription().getVersion() + ChatColor.GOLD + " --");
+        sender.sendMessage(ChatColor.BLUE + " /ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket. [Stand @ Location]");
+        sender.sendMessage(ChatColor.BLUE + " /tickets" + ChatColor.WHITE + " - View Your Tickets.");
+        sender.sendMessage(ChatColor.BLUE + " /checkticket <#>" + ChatColor.WHITE + " - Check one of your ticket's info.");
+        sender.sendMessage(ChatColor.BLUE + " /closeticket <#>" + ChatColor.WHITE + " - Close one of your tickets.");
+        if(player.hasPermission("sht.admin") || player == null) {
+          sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Admin Commands" + ChatColor.GOLD + " --");
+          sender.sendMessage(ChatColor.RED + " /tickets" + ChatColor.WHITE + " - List all tickets");
+          sender.sendMessage(ChatColor.RED + " /checkticket <#>" + ChatColor.WHITE + " - Check a ticket's info.");
+          sender.sendMessage(ChatColor.RED + " /taketicket <#>" + ChatColor.WHITE + " - Assign yourself to a ticket.");
+          sender.sendMessage(ChatColor.RED + " /replyticket" + ChatColor.WHITE + " - Reply to a Ticket.");
+          sender.sendMessage(ChatColor.RED + " /closeticket <#>" + ChatColor.WHITE + " - Close a ticket.");          
         }
       } else {
         if (player == null) {
           sender.sendMessage("This command can only be run by a player");
           return true;
+        } else if (getStorageConfig().getString(player.getDisplayName()) != null ) {
+          String UsersNoOfTickets = getStorageConfig().getString(player.getDisplayName());
+          int temp1 = Integer.parseInt( UsersNoOfTickets );
+          int MaxTickets = getConfig().getInt("MaxTickets");
+          if (temp1 >= MaxTickets) {
+            sender.sendMessage(ChatColor.RED + "You've reached your limit of " + MaxTickets + " tickets.");
+            return true;
+          }
         }
         StringBuilder sb = new StringBuilder();
         for (String arg : args)
-          sb.append(arg + " ");
-            //            String name = myGetPlayerName(args[0]);
+          sb.append(arg + " ");            
             String[] temp = sb.toString().split(" ");
             String[] temp2 = Arrays.copyOfRange(temp, 0, temp.length);
             sb.delete(0, sb.length());
@@ -206,7 +225,6 @@ public class SimpleHelpTickets extends JavaPlugin {
               sb.append(" ");
             }
             String details = sb.toString();
-            //            String loc = player.getLocation().toString();
             World PlayerWorld = player.getWorld();
             String PlayerWorldName = PlayerWorld.getName();
             double locX = player.getLocation().getX();
@@ -220,23 +238,61 @@ public class SimpleHelpTickets extends JavaPlugin {
             sb1.append(locZ);
             String sb2 = sb1.toString();
 
-            List<String> ticket = getStorageConfig().getStringList("tickets");
-            List<String> ticketD = getStorageConfig().getStringList("dates");
-            List<String> ticketPB = getStorageConfig().getStringList("placedby");
-            List<String> ticketLOC = getStorageConfig().getStringList("location");
-            List<String> admin = getStorageConfig().getStringList("admin");
-            ticket.add(details); 
-            ticketD.add(getCurrentDTG("date"));
-            ticketPB.add(player.getDisplayName());
-            ticketLOC.add(sb2);
-            admin.add("noone"); 
-            getStorageConfig().set("tickets", ticket);  // insert the ticket
-            getStorageConfig().set("dates", ticketD); // insert the date
-            getStorageConfig().set("placedby", ticketPB); // insert who placed the ticket
-            getStorageConfig().set("location", ticketLOC); // insert who placed the ticket
-            getStorageConfig().set("admin", admin); // insert who placed the ticket
-            saveStorageConfig();
-            sender.sendMessage(ChatColor.GREEN + "Your ticket has been logged, and will be addressed by an admin shortly.");
+            java.util.List<String> Tickets = getStorageConfig().getStringList("Tickets");
+            int Tsize = Tickets.size();
+            if (Tsize == 0) {
+              int TicketNumber = 0;
+              Tickets.add(""+TicketNumber); 
+              getStorageConfig().set("Tickets", Tickets); 
+              getStorageConfig().set(TicketNumber+".description", details);  // insert the ticket
+              getStorageConfig().set(TicketNumber+".dates", getCurrentDTG("date")); // insert the date
+              getStorageConfig().set(TicketNumber+".placedby", player.getDisplayName()); // insert who placed the ticket
+              getStorageConfig().set(TicketNumber+".location", sb2); // insert location of the ticket
+              getStorageConfig().set(TicketNumber+".reply", "NONE"); // insert reply
+              getStorageConfig().set(TicketNumber+".admin", "noone"); // insert admin who has viewed     
+              ++TicketNumber;
+              getStorageConfig().set("ticketnumber", TicketNumber);  // insert the ticket
+
+              String username = player.getDisplayName();              
+              if (getStorageConfig().getString(username) == null) {
+                getStorageConfig().set(username, 1);
+              } else {
+                String UsersNoOfTickets = getStorageConfig().getString(username);
+                int temp1 = Integer.parseInt( UsersNoOfTickets );
+                ++temp1;
+                getStorageConfig().set(username, temp1);
+              }
+              saveStorageConfig();
+            } else {
+              --Tsize;
+              String finalinlist = Tickets.get(Tsize);            
+              int sizetemp = Integer.parseInt( finalinlist );
+              sizetemp++;
+              int TicketNumber = sizetemp;
+              Tickets.add(""+TicketNumber);
+              getStorageConfig().set("Tickets", Tickets);  // create the new ticket name
+              getStorageConfig().set(TicketNumber+".description", details);  // insert the ticket
+              getStorageConfig().set(TicketNumber+".dates", getCurrentDTG("date")); // insert the date
+              getStorageConfig().set(TicketNumber+".placedby", player.getDisplayName()); // insert who placed the ticket
+              getStorageConfig().set(TicketNumber+".location", sb2); // insert location of the ticket
+              getStorageConfig().set(TicketNumber+".reply", "NONE"); // insert admin who has viewed
+              getStorageConfig().set(TicketNumber+".admin", "noone"); // insert admin who has viewed 
+              getStorageConfig().set("ticketnumber", Tickets.size());  // Set the ticketnumber to the size of the Ticket's list
+
+              String username = player.getDisplayName();              
+              if (getStorageConfig().getString(username) == null) {
+                getStorageConfig().set(username, 1);
+              } else {
+                String UsersNoOfTickets = getStorageConfig().getString(username);
+                int temp1 = Integer.parseInt( UsersNoOfTickets );
+                ++temp1;
+                getStorageConfig().set(username, temp1);
+              }
+              saveStorageConfig();
+            }          
+
+            sender.sendMessage(ChatColor.GREEN + "Your ticket has been logged and will be reviewed shortly");
+
             Player[] players = Bukkit.getOnlinePlayers();
             for(Player op: players){
               if(op.hasPermission("sht.admin")) {
@@ -246,170 +302,237 @@ public class SimpleHelpTickets extends JavaPlugin {
       }
     }
 
-    if(cmd.getName().equalsIgnoreCase("tickets")){
-      java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
-      java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
-      java.util.List<String> userstickPB = getStorageConfig().getStringList("placedby");
-      java.util.List<String> admin = getStorageConfig().getStringList("admin");
-      sender.sendMessage(ChatColor.GOLD + "--- Current Help Tickets ---");
-      int usersticklength = getStorageConfig().getStringList("tickets").size();
-      if (usersticklength == 0) {
-        sender.sendMessage(ChatColor.WHITE + "There are currently no help tickets to display.");  
-      } else {
-        for(int i = 0; i < userstickets.size(); ++i) {
-          String date = usersdates.get(i);
-          String ticket = userstickets.get(i);
-          String tickPB = userstickPB.get(i);
-          String tickadmin = admin.get(i);
-          if (tickadmin.equals("noone")) {       
-            sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") " + ChatColor.GRAY + date + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
-          } else {
-            sender.sendMessage(" " + ChatColor.GOLD + "(" + ChatColor.WHITE + i + ChatColor.GOLD + ") "  + ChatColor.GREEN + " [" + tickadmin + "]" + " " + ChatColor.BLUE + tickPB + ChatColor.WHITE + " - " + ticket);
+    if(cmd.getName().equalsIgnoreCase("tickets")){     
+      int NumberOfTickets = getStorageConfig().getStringList("Tickets").size();
+      if (NumberOfTickets == 0) {
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Current Help Tickets" + ChatColor.GOLD + " --");
+        sender.sendMessage(ChatColor.WHITE + " There are currently no help tickets to display.");  
+      } else if( NumberOfTickets != 0) {
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Current Help Tickets" + ChatColor.GOLD + " --");
+        for(int i = 0; i < NumberOfTickets; ++i) {
+          java.util.List<String> Tickets = getStorageConfig().getStringList("Tickets");
+          String TicketNumber = Tickets.get(i);
+          String TicketDesc = getStorageConfig().getString(TicketNumber+".description");
+          String TicketPB = getStorageConfig().getString(TicketNumber+".placedby");
+          String TicketREPLY = getStorageConfig().getString(TicketNumber+".reply");          
+          if (!player.hasPermission("sht.admin") && TicketPB.contains(player.getDisplayName())) {            
+            if (!TicketREPLY.equalsIgnoreCase("none")) {
+              sender.sendMessage(ChatColor.GOLD + " (" + ChatColor.YELLOW + TicketNumber + ChatColor.GOLD + ") " + ChatColor.BLUE + TicketPB + ChatColor.YELLOW + ": " + TicketDesc);  
+            } else {
+              sender.sendMessage(ChatColor.GOLD + " (" + ChatColor.WHITE + TicketNumber + ChatColor.GOLD + ") " + ChatColor.BLUE + TicketPB + ChatColor.WHITE + ": " + TicketDesc);
+            }
+          } else if(player.hasPermission("sht.admin")) {            
+            if (!TicketREPLY.equalsIgnoreCase("none")) {
+              sender.sendMessage(ChatColor.GOLD + " (" + ChatColor.YELLOW + TicketNumber + ChatColor.GOLD + ") " + ChatColor.BLUE + TicketPB + ChatColor.YELLOW + ": " + TicketDesc);
+            } else {
+              sender.sendMessage(ChatColor.GOLD + " (" + ChatColor.WHITE + TicketNumber + ChatColor.GOLD + ") " + ChatColor.BLUE + TicketPB + ChatColor.WHITE + ": " + TicketDesc);
+            }
           }
         }
         return true;
       }
     }
-    
+
+
+    if(cmd.getName().equalsIgnoreCase("replyticket")){
+      int ticketno = Integer.parseInt( args[0] );
+
+      StringBuilder sb = new StringBuilder();
+      for (String arg : args)
+        sb.append(arg + " ");          
+          String[] temp = sb.toString().split(" ");
+          String[] temp2 = Arrays.copyOfRange(temp, 1, temp.length);
+          sb.delete(0, sb.length());
+          for (String details : temp2)
+          {
+            sb.append(details);
+            sb.append(" ");
+          }
+          String details = sb.toString();                
+
+          getStorageConfig().set(ticketno+".reply", "(" + player.getDisplayName() + ") " + details);          
+          saveStorageConfig();
+          sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.WHITE + " Replied to ticket " + ChatColor.GOLD + ticketno + ChatColor.WHITE + ".");
+    }
+
+
     if(cmd.getName().equalsIgnoreCase("taketicket")){
       if (player == null) {
         sender.sendMessage("This command can only be run by a player");
         return true;
       }
       int ticketno = Integer.parseInt( args[0] );
-      java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
-      java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
-      java.util.List<String> userstickPB = getStorageConfig().getStringList("placedby");
-      java.util.List<String> userstickLOC = getStorageConfig().getStringList("location");
-      java.util.List<String> admin = getStorageConfig().getStringList("admin");
-      if (ticketno > userstickets.size()) {
+      java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");            
+
+      if (ticketno > tickets.size() || tickets.size() == 0) {
         sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Ticket " + ChatColor.GOLD + ticketno + ChatColor.GRAY + " Does Not Exist");
         return true;
       } else {
-        String date = usersdates.get(ticketno);
-        String ticket = userstickets.get(ticketno);
-        String tickPB = userstickPB.get(ticketno);
-        String tickLOC = userstickLOC.get(ticketno);
 
-        String[] vals = tickLOC.split(",");
+        String tickdesc = getStorageConfig().getString(ticketno+".description");
+        String date = getStorageConfig().getString(ticketno+".dates");
+        String placedby =  getStorageConfig().getString(ticketno+".placedby");
+        String loc =  getStorageConfig().getString(ticketno+".location");
+        String reply = getStorageConfig().getString(ticketno+".reply");
+        String admin = getStorageConfig().getString(ticketno+".admin");
+
+        getStorageConfig().set(ticketno+".admin", player.getDisplayName());      
+
+        saveStorageConfig();
+
+        String[] vals = loc.split(",");
         World world = Bukkit.getWorld(vals[0]);
         double x = Double.parseDouble(vals[1]);        
         double y = Double.parseDouble(vals[2]);
         double z = Double.parseDouble(vals[3]);
-        Location loc = new Location(world, x, y, z);
-
-        admin.set(ticketno, player.getDisplayName());
-        getStorageConfig().set("admin", admin); // insert who placed the ticket
-        player.teleport(loc);
-        sender.sendMessage(ChatColor.GOLD + "--- " + ChatColor.WHITE + "Ticket " + ticketno + ChatColor.GOLD + " ---");
-        sender.sendMessage(" " + ChatColor.BLUE + "Placed By: " + ChatColor.WHITE + tickPB);
+        Location locc = new Location(world, x, y, z);
+        player.teleport(locc);
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Ticket " + ticketno + ChatColor.GOLD + " --");
+        sender.sendMessage(" " + ChatColor.BLUE + "Placed By: " + ChatColor.WHITE + placedby);
         sender.sendMessage(" " + ChatColor.BLUE + "Date: " + ChatColor.WHITE + date);
-        sender.sendMessage(" " + ChatColor.BLUE + "Ticket: " + ChatColor.GREEN + ticket);
+        sender.sendMessage(" " + ChatColor.BLUE + "Assigned Admin: " + ChatColor.WHITE + admin);
+        sender.sendMessage(" " + ChatColor.BLUE + "Ticket: " + ChatColor.GREEN + tickdesc);
+        sender.sendMessage(" " + ChatColor.BLUE + "Reply: " + ChatColor.YELLOW + reply);
         //      sender.sendMessage(" " + ChatColor.BLUE + "Location: " + ChatColor.GREEN + tickLOC);
-        String tickuser = myGetPlayerName(tickPB);
+        String tickuser = myGetPlayerName(placedby);
         if(this.getServer().getPlayer(tickuser) == null) {
           return true;  
         } else {
           String admin1 = player.getDisplayName();
           Player target = this.getServer().getPlayer(tickuser);
-          target.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " is reviewing your help ticket");
+          String TicketReview = getConfig().getString("TicketBeingReviewedMsg");
+          if (TicketReview == null) {
+            target.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " is reviewing your help ticket");
+            return true;
+          } else {
+            target.sendMessage(ChatColor.GREEN + TicketReview);
+            return true;
+          }
+
         }
       }
     }
 
+    if(cmd.getName().equalsIgnoreCase("checkticket")){
+      int ticketno = Integer.parseInt( args[0] );
+      //      java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");            
 
+
+      String placedby =  getStorageConfig().getString(ticketno+".placedby");
+      if (!placedby.contains(player.getDisplayName()) && !player.hasPermission("sht.admin")) {
+        sender.sendMessage("This is not your ticket to check");
+      } else {
+        String tickdesc = getStorageConfig().getString(ticketno+".description");
+        String date = getStorageConfig().getString(ticketno+".dates");        
+        //          String loc =  getStorageConfig().getString(ticketno+".location");
+        String reply = getStorageConfig().getString(ticketno+".reply");
+        String admin = getStorageConfig().getString(ticketno+".admin");        
+
+        sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Ticket " + ticketno + ChatColor.GOLD + " --");
+        sender.sendMessage(" " + ChatColor.BLUE + "Placed By: " + ChatColor.WHITE + placedby);
+        sender.sendMessage(" " + ChatColor.BLUE + "Date: " + ChatColor.WHITE + date);
+        sender.sendMessage(" " + ChatColor.BLUE + "Assigned Admin: " + ChatColor.WHITE + admin);
+        sender.sendMessage(" " + ChatColor.BLUE + "Ticket: " + ChatColor.GREEN + tickdesc);
+        sender.sendMessage(" " + ChatColor.BLUE + "Reply: " + ChatColor.YELLOW + reply);
+        return true;
+      }
+    }
+
+    // NOT USED
     if(cmd.getName().equalsIgnoreCase("delticket")){
       if(args.length == 0) {        
         sender.sendMessage(ChatColor.WHITE + "/delticket <#>");
       } else if(args.length == 1) {
         int ticketno = Integer.parseInt( args[0] );
+        int TicketNumber = getStorageConfig().getInt("ticketnumber");
 
-        java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
-        java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
-        java.util.List<String> userstickPB = getStorageConfig().getStringList("placedby");
-        java.util.List<String> userstickLOC = getStorageConfig().getStringList("location");
-        java.util.List<String> admin = getStorageConfig().getStringList("admin");
-        userstickets.remove(ticketno);
-        usersdates.remove(ticketno);
-        userstickPB.remove(ticketno);
-        userstickLOC.remove(ticketno);
-        admin.remove(ticketno);
-        getStorageConfig().set("tickets", userstickets);  // insert the ticket
-        getStorageConfig().set("dates", usersdates); // insert the date
-        getStorageConfig().set("placedby", userstickPB); // insert who placed the ticket
-        getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
-        getStorageConfig().set("admin", admin); // insert who placed the ticket
-        saveStorageConfig();          
-        sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " deleted");
+        String placedby =  getStorageConfig().getString(ticketno+".placedby");
+        if (!placedby.contains(player.getDisplayName()) && !player.hasPermission("sht.admin")) {
+          sender.sendMessage("This is not your ticket to delete");
+        } else {
+
+          java.util.List<String> Tickets = getStorageConfig().getStringList("Tickets");
+          Tickets.remove(args[0]);
+          getStorageConfig().set("Tickets", Tickets);
+          getStorageConfig().set(args[0], null);
+          --TicketNumber;
+          getStorageConfig().set("ticketnumber", TicketNumber);
+          saveStorageConfig();
+
+          sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " deleted");
+          return true;
+        }
       }
-    }      
+    }
 
     if(cmd.getName().equalsIgnoreCase("closeticket")){
       if(args.length == 0) {        
         sender.sendMessage(ChatColor.WHITE + "/closeticket <#>");
       } else if(args.length == 1) {
         int ticketno = Integer.parseInt( args[0] );
+        int TicketNumber = getStorageConfig().getInt("ticketnumber");
 
-        java.util.List<String> userstickets = getStorageConfig().getStringList("tickets");            
-        java.util.List<String> usersdates = getStorageConfig().getStringList("dates");
-        java.util.List<String> userstickPB = getStorageConfig().getStringList("placedby");
-        java.util.List<String> userstickLOC = getStorageConfig().getStringList("location");
-        java.util.List<String> admin = getStorageConfig().getStringList("admin");
-        String target = userstickPB.get(ticketno);
-        userstickets.remove(ticketno);
-        usersdates.remove(ticketno);
-        userstickPB.remove(ticketno);
-        userstickLOC.remove(ticketno);
-        admin.remove(ticketno);
-        getStorageConfig().set("tickets", userstickets);  // insert the ticket
-        getStorageConfig().set("dates", usersdates); // insert the date
-        getStorageConfig().set("placedby", userstickPB); // insert who placed the ticket
-        getStorageConfig().set("location", userstickLOC); // insert who placed the ticket
-        getStorageConfig().set("admin", admin); // insert who placed the ticket
-        saveStorageConfig();          
-         sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed");
-        String tickuser = myGetPlayerName(target);
-        if(this.getServer().getPlayer(tickuser) == null) {
-          return true;  
-        } else {
-          String admin1 = player.getDisplayName();
-          Player target1 = this.getServer().getPlayer(tickuser);
-          target1.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " has closed your help ticket");
+        String placedby =  getStorageConfig().getString(ticketno+".placedby");
+        if (!placedby.contains(player.getDisplayName()) && !player.hasPermission("sht.admin")) {
+          sender.sendMessage("This is not your ticket to delete");
+        } else if(placedby.contains(player.getDisplayName()) && !player.hasPermission("sht.admin")) { // if the player owns the ticket (NOTADMIN)
+
+          java.util.List<String> Tickets = getStorageConfig().getStringList("Tickets");
+          Tickets.remove(args[0]);
+          getStorageConfig().set("Tickets", Tickets);
+          getStorageConfig().set(args[0], null);
+          --TicketNumber;
+          getStorageConfig().set("ticketnumber", TicketNumber);
+
+          String username = player.getDisplayName();
+          String UsersNoOfTickets = getStorageConfig().getString(username);
+          int temp1 = Integer.parseInt( UsersNoOfTickets );
+          --temp1;
+          getStorageConfig().set(username, temp1);
+          saveStorageConfig();
+
+          sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed.");
           Player[] players = Bukkit.getOnlinePlayers();
           for(Player op: players){
             if(op.hasPermission("sht.admin") && getConfig().getBoolean("NotifyAdminOnTicketClose")) {
-              op.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin1 + ChatColor.GRAY + " has closed ticket " + ChatColor.GOLD + ticketno);
+              op.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "User " + ChatColor.GOLD + player.getDisplayName() + ChatColor.GRAY + " has closed ticket " + ChatColor.GOLD + ticketno);
+            }
+          } 
+          return true;  
+        } else if(player.hasPermission("sht.admin")) {
+          java.util.List<String> Tickets = getStorageConfig().getStringList("Tickets");
+          Tickets.remove(args[0]);
+          getStorageConfig().set("Tickets", Tickets);
+          getStorageConfig().set(args[0], null);
+          --TicketNumber;
+          getStorageConfig().set("ticketnumber", TicketNumber);
+
+          String username = placedby;
+          String UsersNoOfTickets = getStorageConfig().getString(username);
+          int temp1 = Integer.parseInt( UsersNoOfTickets );
+          --temp1;
+          getStorageConfig().set(username, temp1);
+
+          saveStorageConfig();
+          sender.sendMessage(ChatColor.GREEN + " Ticket " + ticketno + " closed.");
+
+          String admin = player.getDisplayName();
+
+          if (this.getServer().getPlayer(placedby) != null) {
+            Player target = this.getServer().getPlayer(placedby);
+            target.sendMessage(ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin + ChatColor.GRAY + " has closed your help ticket");
+          }
+          Player[] players = Bukkit.getOnlinePlayers();
+          for(Player op: players){
+            if(op.hasPermission("sht.admin") && getConfig().getBoolean("NotifyAdminOnTicketClose")) {
+              op.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Administrator " + ChatColor.GOLD + admin + ChatColor.GRAY + " has closed ticket " + ChatColor.GOLD + ticketno);
             }
           }
-
+          return true;
         }
       }    
     }
-
-
-    if(cmd.getName().equalsIgnoreCase("cwarns")){
-      if(args.length != 1) {        
-        sender.sendMessage(ChatColor.WHITE + "/cwarn <playername>");
-      } else if(args.length == 1) {
-        String name = myGetPlayerName(args[0]);
-        if(!getStorageConfig().contains(name)) {  
-          sender.sendMessage(ChatColor.BLUE + name + ChatColor.GRAY + " has no warnings");
-          return true;
-        } else {
-          getStorageConfig().set(name, null);
-          saveStorageConfig();
-          sender.sendMessage(ChatColor.GRAY + "Warnings for " + ChatColor.BLUE + name + ChatColor.GRAY + " cleared");
-          if(this.getServer().getPlayer(args[0]) == null) {
-            return true;  
-          } else {
-            Player target = this.getServer().getPlayer(args[0]);
-            String admin = player.getDisplayName();
-            target.sendMessage(ChatColor.BLUE + admin + ChatColor.GRAY +  " has removed one of your warnings");
-            return true;
-          }
-        }
-      }
-    }
+    
     return true;
     // END
   }

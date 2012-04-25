@@ -1,4 +1,8 @@
 # Simple Help Tickets
-#
+# Permisions:
+# sht.ticket - Create help tickets
+# sht.admin - Administrate tickets
+# 
 ShowTicketsOnJoin: true
 NotifyAdminOnTicketClose: true
+MaxTickets: 3
