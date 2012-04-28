@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 0.6
+version: 0.7
 commands:
    helptickets:
       description: Help Menu
