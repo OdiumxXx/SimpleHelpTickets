@@ -410,10 +410,14 @@ public class SimpleHelpTickets extends JavaPlugin {
     }
 
     if(cmd.getName().equalsIgnoreCase("checkticket")){
+      for (char c : args[0].toCharArray()) {
+        if (!Character.isDigit(c)) {
+          sender.sendMessage(ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+          return true;
+        }
+      }
       int ticketno = Integer.parseInt( args[0] );
-      //      java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");            
-
-
+      //      java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");  
       String placedby =  getStorageConfig().getString(ticketno+".placedby");
       if (player != null && !placedby.contains(player.getDisplayName()) && !player.hasPermission("sht.admin")) {
         sender.sendMessage("This is not your ticket to check");
@@ -434,9 +438,14 @@ public class SimpleHelpTickets extends JavaPlugin {
       }
     }
 
-    if(cmd.getName().equalsIgnoreCase("replyticket")){
+    if(cmd.getName().equalsIgnoreCase("replyticket")){      
+      for (char c : args[0].toCharArray()) {
+        if (!Character.isDigit(c)) {
+          sender.sendMessage(ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+          return true;
+        }
+      }
       int ticketno = Integer.parseInt( args[0] );
-
       StringBuilder sb = new StringBuilder();
       for (String arg : args)
         sb.append(arg + " ");          
@@ -463,11 +472,16 @@ public class SimpleHelpTickets extends JavaPlugin {
           }
     }
 
-
     if(cmd.getName().equalsIgnoreCase("taketicket")){
       if (player == null) {
         sender.sendMessage("This command can only be run by a player, use /checkticket instead.");
         return true;
+      }
+      for (char c : args[0].toCharArray()) {
+        if (!Character.isDigit(c)) {
+          sender.sendMessage(ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+          return true;
+        }
       }
       int ticketno = Integer.parseInt( args[0] );
       java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");            
@@ -551,6 +565,12 @@ public class SimpleHelpTickets extends JavaPlugin {
       if(args.length == 0) {        
         sender.sendMessage(ChatColor.WHITE + "/delticket <#>");
       } else if(args.length == 1) {
+        for (char c : args[0].toCharArray()) {
+          if (!Character.isDigit(c)) {
+            sender.sendMessage(ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+            return true;
+          }
+        }
         int ticketno = Integer.parseInt( args[0] );
         int TicketNumber = getStorageConfig().getInt("ticketnumber");
 
@@ -577,6 +597,12 @@ public class SimpleHelpTickets extends JavaPlugin {
       if(args.length == 0) {        
         sender.sendMessage(ChatColor.WHITE + "/closeticket <#>");
       } else if(args.length == 1) {
+        for (char c : args[0].toCharArray()) {
+          if (!Character.isDigit(c)) {
+            sender.sendMessage(ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+            return true;
+          }
+        }
         int ticketno = Integer.parseInt( args[0] );
         int TicketNumber = getStorageConfig().getInt("ticketnumber");
 
