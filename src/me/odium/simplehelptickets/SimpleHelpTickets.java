@@ -472,6 +472,8 @@ public class SimpleHelpTickets extends JavaPlugin {
           }
     }
 
+
+
     if(cmd.getName().equalsIgnoreCase("taketicket")){
       if (player == null) {
         sender.sendMessage("This command can only be run by a player, use /checkticket instead.");
@@ -484,9 +486,8 @@ public class SimpleHelpTickets extends JavaPlugin {
         }
       }
       int ticketno = Integer.parseInt( args[0] );
-      java.util.List<String> tickets = getStorageConfig().getStringList("Tickets");            
-
-      if (ticketno > tickets.size() || tickets.size() == 0) {
+      // Make sure ticket exists
+      if (!getStorageConfig().contains(args[0])) {
         sender.sendMessage(ChatColor.GOLD + "* " + ChatColor.GRAY + "Ticket " + ChatColor.GOLD + ticketno + ChatColor.GRAY + " Does Not Exist");
         return true;
       } else {
@@ -501,7 +502,7 @@ public class SimpleHelpTickets extends JavaPlugin {
         getStorageConfig().set(ticketno+".admin", player.getDisplayName());      
         saveStorageConfig();
 
-        if (loc.contains("none")) {
+        if (loc.contains("none")) { // if console ticket
           sender.sendMessage(ChatColor.GOLD + "-- " + ChatColor.WHITE + "Ticket " + ticketno + ChatColor.GOLD + " --");
           sender.sendMessage(" " + ChatColor.BLUE + "Placed By: " + ChatColor.WHITE + placedby);
           sender.sendMessage(" " + ChatColor.BLUE + "Date: " + ChatColor.WHITE + date);
@@ -526,6 +527,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 
           }
         } else {
+          // compile location
           String[] vals = loc.split(",");
           World world = Bukkit.getWorld(vals[0]);
           double x = Double.parseDouble(vals[1]);        
@@ -560,6 +562,8 @@ public class SimpleHelpTickets extends JavaPlugin {
       }
     }
 
+
+
     // NOT USED
     if(cmd.getName().equalsIgnoreCase("delticket")){
       if(args.length == 0) {        
@@ -592,6 +596,8 @@ public class SimpleHelpTickets extends JavaPlugin {
         }
       }
     }
+    
+    
 
     if(cmd.getName().equalsIgnoreCase("closeticket")){
       if(args.length == 0) {        
