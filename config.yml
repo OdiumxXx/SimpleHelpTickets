@@ -13,6 +13,10 @@
 # sht.ticket - Create help tickets
 # sht.admin - Administrate tickets
 #
+# Commands:
+# Change the commands to fit your needs, just define them after Commands.
+# Example:
+# realcommand: yourcommand
 MaxTickets: 3
 TicketExpiration: 7
 NotifyAdminOnTicketClose: true
