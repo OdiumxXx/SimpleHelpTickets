@@ -32,7 +32,7 @@ public class checkticket implements CommandExecutor {
     }
 
     if (args.length != 1) {
-    	plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-checkticket"));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-checkticket")));
     	return true;
     } else {
 
