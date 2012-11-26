@@ -7,7 +7,6 @@ import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -37,8 +36,8 @@ public class closeticket implements CommandExecutor {
     }
 
     if(args.length == 0) {        
-      sender.sendMessage(ChatColor.WHITE + "/closeticket <#>");
-      return true;
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-closeticket") + plugin.getOutputConfig().getString("UserCommandsMenu-closeticket")));
+    	return true;
       // CLOSING TICKET
     } else if(args.length == 1) {
       // CHECK TICKETNUMBER IS A DIGIT

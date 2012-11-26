@@ -11,7 +11,8 @@
 # &admin - Admin who triggered the command
 # %player - Player you trigered the command
 # ------------------------------------------
-Prefix: '&2[SimpleHelpTickets] '
+Prefix: '&2[SimpleHelpTickets]'
+HelpPageTitle: '&2[SimpleHelpTickets]'
 UserCommandsMenu-helptickets: ' &w- Display the commands menu'
 UserCommandsMenu-helpme: ' &w- Explain how to open a ticket'
 UserCommandsMenu-Title: '&Y[ &wUser Commands &Y]'
@@ -21,6 +22,7 @@ UserCommandsMenu-checkticket: ' &w- Check one of your tickets info'
 UserCommandsMenu-replyticket: ' &w- Reply to one of your tickets'
 UserCommandsMenu-closeticket: ' &w- Close one of your tickets'
 UserCommandsMenu-delticket: ' &w- Delete a ticket'
+# -----------ADMIN COMMANDS---------------------
 AdminCommandsMenu-Title: '&Y[ &wAdmin Commands &Y]'
 AdminCommandsMenu-tickets: ' &w- List Open/All/Closed tickets'
 AdminCommandsMenu-taketicket: ' &w- Assign yourself to a ticket'
@@ -29,6 +31,24 @@ AdminCommandsMenu-closeticket: ' &w- Close or Reopen a ticket'
 AdminCommandsMenu-delticket: ' &w- Delete a ticket'
 AdminCommandsMenu-purgeticket: ' &w- Purge expired, Closed or All tickets'
 AdminCommandsMenu-reload: ' &w- Reload the config'
+# -----------COMMAND DESCRIPTIONS----------------
+UserCommandsDescription-helptickets: '&G/helptickets'
+UserCommandsDescription-helpme: '&G/helpme'
+UserCommandsDescription-ticket: '&G/ticket <Description>'
+UserCommandsDescription-tickets: '&G/tickets'
+UserCommandsDescription-checkticket: '&G/checkticket <#>'
+UserCommandsDescription-replyticket: '&G/replyticket <#> <Reply>'
+UserCommandsDescription-closeticket: '&G/closeticket <#>'
+UserCommandsDescription-delticket: '&G/delticket <#>'
+# -----------ADMIN COMMANDS---------------------
+AdminCommandsDescription-tickets: '&C/tickets [ac]'
+AdminCommandsDescription-taketicket: '&C/taketicket <#>'
+AdminCommandsDescription-replyticket: '&C/replyticket <#> <Reply>'
+AdminCommandsDescription-closeticket: '&C/closeticket [r] <#>'
+AdminCommandsDescription-delticket: '&C/delticket <#>'
+AdminCommandsDescription-purgeticket: '&C/purgetickets [-c/-a]'
+AdminCommandsDescription-reload: '&C/helptickets reload'
+
 Error: '&rError:&w &arg'
 InvalidTicketNumber: '&rInvalid Ticket Number:&w &arg'
 TicketNotExist: '&rTicket&Y &arg &rdoes not exist'

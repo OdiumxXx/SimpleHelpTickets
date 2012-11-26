@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,10 +22,10 @@ public class purgetickets implements CommandExecutor {
   Connection con;
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
-    if (args.length == 0) {
-      sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD+plugin.expireTickets()+ChatColor.WHITE+" Expired tickets purged");
-      return true;
-    } else if (args.length == 1 && args[0].equalsIgnoreCase("-c")) { 
+    if (args.length == 0 && sender.hasPermission("sht.purge")) {
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-purgetickets") + plugin.getOutputConfig().getString("UserCommandsMenu-purgetickets")));
+    	return true;
+    } else if (args.length == 1 && args[0].equalsIgnoreCase("-c") && sender.hasPermission("sht.purge")) { 
       java.sql.Statement stmt;
       Connection con;
       try {
@@ -43,7 +42,7 @@ public class purgetickets implements CommandExecutor {
         sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
       }  
 
-    } else if (args.length == 1 && args[0].equalsIgnoreCase("-a")) { 
+    } else if (args.length == 1 && args[0].equalsIgnoreCase("-a") && sender.hasPermission("sht.purge")) { 
       java.sql.Statement stmt;
       Connection con;
       try {

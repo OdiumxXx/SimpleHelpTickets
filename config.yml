@@ -12,7 +12,7 @@
 # Permisions:
 # sht.ticket - Create help tickets
 # sht.admin - Administrate tickets
-#
+# sht.purge - Access to purge all or some tickets
 MaxTickets: 3
 TicketExpiration: 7
 NotifyAdminOnTicketClose: true

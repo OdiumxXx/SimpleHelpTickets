@@ -32,13 +32,12 @@ public class replyticket implements CommandExecutor {
     }
 
     if (args.length <= 1) {      
-      sender.sendMessage("/replyticket <#> <reply>");
-      return true;      
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-replyticket") + plugin.getOutputConfig().getString("UserCommandsMenu-replyticket")));
+    	return true;   
     } else if (args.length > 1) {
 
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
           sender.sendMessage(plugin.getMessage("InvalidTicketNumber").replace("&arg", args[0]));
           return true;
         }
