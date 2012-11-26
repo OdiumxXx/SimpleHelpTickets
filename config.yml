@@ -12,11 +12,7 @@
 # Permisions:
 # sht.ticket - Create help tickets
 # sht.admin - Administrate tickets
-#
-# Commands:
-# Change the commands to fit your needs, just define them after Commands.
-# Example:
-# realcommand: yourcommand
+# sht.purge - Access to purge all or some tickets
 MaxTickets: 3
 TicketExpiration: 7
 NotifyAdminOnTicketClose: true
