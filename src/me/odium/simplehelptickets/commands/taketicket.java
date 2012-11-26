@@ -39,8 +39,8 @@ public class taketicket implements CommandExecutor {
       return true;
     }
     if(args.length == 0) {        
-      sender.sendMessage(ChatColor.WHITE + "/taketicket <#>");
-      return true;
+		plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-taketicket"));
+		return true;
     }
     
     for (char c : args[0].toCharArray()) {

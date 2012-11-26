@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.4
+version: 1.5
 commands:
    sht:
       aliases: [helptickets, simplehelptickets]
@@ -42,5 +42,5 @@ commands:
    purgetickets:
       aliases: [ptickets]
       description: Purge all expired tickets
-      permission: sht.admin.purge
+      permission: sht.purge
       usage: /purgetickets

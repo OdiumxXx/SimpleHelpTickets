@@ -32,8 +32,8 @@ public class delticket implements CommandExecutor {
     }
 
     if(args.length == 0) {        
-      sender.sendMessage(ChatColor.WHITE + "/delticket <#>");
-      return true;
+		plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-delticket"));
+		return true;
     } else if(args.length == 1) {
 
       for (char c : args[0].toCharArray()) {
