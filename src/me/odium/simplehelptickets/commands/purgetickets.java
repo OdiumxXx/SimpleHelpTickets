@@ -23,7 +23,7 @@ public class purgetickets implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     if (args.length == 0 && sender.hasPermission("sht.purge")) {
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsMenu-purgetickets") + plugin.getOutputConfig().getString("UserCommandsDescription-purgetickets")));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-purgetickets") + plugin.getOutputConfig().getString("UserCommandsMenu-purgetickets")));
     	return true;
     } else if (args.length == 1 && args[0].equalsIgnoreCase("-c") && sender.hasPermission("sht.purge")) { 
       java.sql.Statement stmt;

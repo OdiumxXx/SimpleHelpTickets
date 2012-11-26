@@ -32,7 +32,7 @@ public class replyticket implements CommandExecutor {
     }
 
     if (args.length <= 1) {      
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsMenu-replyticket") + plugin.getOutputConfig().getString("UserCommandsDescription-replyticket")));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-replyticket") + plugin.getOutputConfig().getString("UserCommandsMenu-replyticket")));
     	return true;   
     } else if (args.length > 1) {
 

@@ -36,7 +36,7 @@ public class closeticket implements CommandExecutor {
     }
 
     if(args.length == 0) {        
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsMenu-closeticket") + plugin.getOutputConfig().getString("UserCommandsDescription-closeticket")));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-closeticket") + plugin.getOutputConfig().getString("UserCommandsMenu-closeticket")));
     	return true;
       // CLOSING TICKET
     } else if(args.length == 1) {
