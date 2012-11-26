@@ -39,7 +39,7 @@ public class taketicket implements CommandExecutor {
       return true;
     }
     if(args.length == 0) {        
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-taketicket")));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsMenu-taketicket") + plugin.getOutputConfig().getString("UserCommandsDescription-taketicket")));
 		return true;
     }
     

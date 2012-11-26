@@ -32,7 +32,7 @@ public class delticket implements CommandExecutor {
     }
 
     if(args.length == 0) {        
-    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsDescription-delticket")));
+    	sender.sendMessage(plugin.replaceColorMacros(plugin.getOutputConfig().getString("UserCommandsMenu-delticket") + plugin.getOutputConfig().getString("UserCommandsDescription-delticket")));
 		return true;
     } else if(args.length == 1) {
 
