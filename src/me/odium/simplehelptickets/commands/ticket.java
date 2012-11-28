@@ -196,6 +196,19 @@ public class ticket implements CommandExecutor {
               
               try {
                 con = plugin.mysql.getConnection();
+                
+                Statement stmtCOUNT = con.createStatement();
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"'");
+                rs.next();
+                final int ticketCount = rs.getInt("MaxTickets");
+                int MaxTickets = plugin.getConfig().getInt("MaxTickets");
+                
+                if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin")) {
+                  sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", MaxTickets+""));
+                  stmtCOUNT.close();
+                  return true;                
+                }
+                
                 stmt = con.createStatement();
                 PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
                 // INSERT INTO lyrics1(name, artist) values(?, ?)
@@ -240,19 +253,18 @@ public class ticket implements CommandExecutor {
             } else {
             try {        
               con = service.getConnection();
+
               Statement stmtCOUNT = con.createStatement();
               ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"'");
+              rs.next();
               final int ticketCount = rs.getInt("MaxTickets");
               int MaxTickets = plugin.getConfig().getInt("MaxTickets");
-
+              
               if (ticketCount >= MaxTickets && !player.hasPermission("sht.admin")) {
-//                String TicketOpen = plugin.getConfig().getString("MessageOutput.TicketMaxMsg");
-//                sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketOpen).replace("%maxtickets%", ""+MaxTickets));
                 sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", MaxTickets+""));
-                  return true;                
+                stmtCOUNT.close();
+                return true;                
               }
-
-              stmtCOUNT.close();
 
               stmt = con.createStatement();
               PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
@@ -282,7 +294,6 @@ public class ticket implements CommandExecutor {
               for(Player op: players){
                 if(op.hasPermission("sht.admin") && op != player) {
                   op.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
-//                  op.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ ChatColor.WHITE +"Player "+plugin.GOLD+sender.getName() + ChatColor.WHITE + " has opened a Help Ticket");
                 }
               }
 
