@@ -198,7 +198,7 @@ public class ticket implements CommandExecutor {
                 con = plugin.mysql.getConnection();
                 
                 Statement stmtCOUNT = con.createStatement();
-                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"'");
+                ResultSet rs = stmtCOUNT.executeQuery("SELECT COUNT(owner) AS MaxTickets FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");
                 rs.next();
                 final int ticketCount = rs.getInt("MaxTickets");
                 int MaxTickets = plugin.getConfig().getInt("MaxTickets");
