@@ -38,7 +38,7 @@ public class replyticket implements CommandExecutor {
 
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
+          //          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
           sender.sendMessage(plugin.getMessage("InvalidTicketNumber").replace("&arg", args[0]));
           return true;
         }
@@ -76,14 +76,12 @@ public class replyticket implements CommandExecutor {
                 rs.next(); //sets pointer to first record in result set
               }
               if (rs.getInt("ticketTotal") == 0) {
-//                sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+ChatColor.GOLD+args[0]+ChatColor.RED+" does not exist!");
                 sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
                 rs.close();
                 stmt.close();
                 return true;
               }
               stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
-//              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.WHITE+"Replied to Ticket: "+ChatColor.GOLD+id);
               sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
 
 
@@ -99,10 +97,8 @@ public class replyticket implements CommandExecutor {
                 if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
                   rs.next(); //sets pointer to first record in result set
                 }
-//                String TicketReply = plugin.getConfig().getString("MessageOutput.TicketReplyMsg");
                 Player target = Bukkit.getPlayer(rs.getString("owner"));          
                 if (target != null) {
-//                  target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketReply));
                   target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
                   return true;                  
                 }
@@ -123,6 +119,12 @@ public class replyticket implements CommandExecutor {
             } else {
               // PLAYER COMMANDS
               String admin = player.getName();
+              //  CHECK IF PLAYE HAS TICKET PERMS OR ADMIN PERMS
+              if (!player.hasPermission("sht.ticket") && !player.hasPermission("sht.admin")) {
+                sender.sendMessage(plugin.getMessage("NoPermission"));
+                return true;
+              }
+
               // CHECK IF TICKET EXISTS
               rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+id+"'");
               if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
@@ -140,8 +142,8 @@ public class replyticket implements CommandExecutor {
                 rs.next(); //sets pointer to first record in result set
               }
               // IF PLAYER IS THE TICKET OWNER
-              if (player.getName().equalsIgnoreCase(rs.getString("owner"))) {
-                
+              if (player.getName().equalsIgnoreCase(rs.getString("owner"))) {                
+
                 stmt.executeUpdate("UPDATE SHT_Tickets SET userreply='"+details+"' WHERE id='"+id+"'");
                 sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
 
@@ -172,41 +174,52 @@ public class replyticket implements CommandExecutor {
                     return true;
                   }         
                 }
-                
+                // IF PLAYER ISNT THE TICKET OWNER 
               } else {
-              
-              stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
-              sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
 
-              try {
-                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-                  con = plugin.mysql.getConnection();
-                } else {
-                  con = service.getConnection();
-                }
-                stmt = con.createStatement();
-                rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+id+"'");
-                if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-                  rs.next(); //sets pointer to first record in result set
+                if (!player.hasPermission("sht.admin")) {
+                  sender.sendMessage(plugin.getMessage("NoPermission"));
+                  return true;
                 }
 
-                Player target = Bukkit.getPlayer(rs.getString("owner"));          
-                if (target != null && target != player) {
-                  target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
-                  return true;
+                stmt.executeUpdate("UPDATE SHT_Tickets SET adminreply='"+admin+": "+details+"', admin='"+admin+"' WHERE id='"+id+"'");
+                // INFORM OPS THAT AN ADMIN REPLIED TO TICKET
+                Player[] players = Bukkit.getOnlinePlayers();
+                for(Player op: players){
+                  if(op.hasPermission("sht.admin")) {
+                    op.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
+                  }
                 }
-              } catch(Exception e) {
-                if (e.toString().contains("ResultSet closed")) {
-                  sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
-                  return true;
-                } else {
-                  sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
-                  return true;
-                }         
+
+                try {
+                  if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+                    con = plugin.mysql.getConnection();
+                  } else {
+                    con = service.getConnection();
+                  }
+                  stmt = con.createStatement();
+                  rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='"+id+"'");
+                  if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+                    rs.next(); //sets pointer to first record in result set
+                  }
+                  // INFORM TICKET-OWNER THAT AN ADMIN REPLIED TO THEIR TICKET
+                  Player target = Bukkit.getPlayer(rs.getString("owner"));          
+                  if (target != null && target != player) {
+                    target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
+                    return true;
+                  }
+                } catch(Exception e) {
+                  if (e.toString().contains("ResultSet closed")) {
+                    sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+                    return true;
+                  } else {
+                    sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+                    return true;
+                  }         
+                }
+
+                return true;
               }
-
-              return true;
-            }
             }
           } catch(Exception e) {
             if (e.toString().contains("ResultSet closed")) {

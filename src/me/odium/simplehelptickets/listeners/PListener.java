@@ -2,10 +2,6 @@ package me.odium.simplehelptickets.listeners;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
 

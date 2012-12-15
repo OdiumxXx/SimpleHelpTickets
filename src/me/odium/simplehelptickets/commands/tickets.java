@@ -33,13 +33,13 @@ public class tickets implements CommandExecutor {
 
     if (player == null || player.hasPermission("sht.admin")) {
 
-      
-      
+
+
       try {
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           con = plugin.mysql.getConnection();
         } else {
-        con = service.getConnection();
+          con = service.getConnection();
         }
         stmt = con.createStatement();
 
@@ -53,14 +53,14 @@ public class tickets implements CommandExecutor {
             String desc = rs.getString("description");
             if (desc.length() > 42) {
               desc = desc.substring(0, 42)+"...";
-            }
-            // if only admin has replied
-            if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) {
+            }            
+            if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // if only admin has replied
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
-              // if both have replied
-            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
+            } else if (!rs.getString("userreply").equalsIgnoreCase("NONE") && rs.getString("adminreply").equalsIgnoreCase("NONE")) { // if only user has replied
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) { // if both have replied
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
-            } else {
+            } else if (rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // if neither have replied
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.WHITE+desc);
             }
           }
@@ -85,22 +85,31 @@ public class tickets implements CommandExecutor {
             if (desc.length() > 42) {
               desc = desc.substring(0, 42)+"...";
             }
-            if (!rs.getString("adminreply").equalsIgnoreCase("NONE")) {              
-              if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+            if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF ONLY ADMIN HAS REPLIED     
+              if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN AND ADMIN HAS REPLIED
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
-              } else {
+              } else { // IF TICKET IS CLOSED AND ADMIN HAS REPLIED
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
               }
-            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
-              if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+
+            } else if (!rs.getString("userreply").equalsIgnoreCase("NONE") && rs.getString("adminreply").equalsIgnoreCase("NONE")) { // IF ONLY USER HAS REPLIED
+              if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN AND ONLY USER HAS REPLIED
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+              } else { // IF TICKET IS CLOSED AND ONLY USER HAS REPLIED
+                sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+              }
+
+            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF BOTH ADMIN AND USER HAVE REPLIED
+              if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN AND BOTH HAVE REPLIED
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
-              } else {
+              } else { // IF TICKET IS CLOSED AND BOTH HAVE REPLIED
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
               }
-            } else {
-              if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+
+            } else if (rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF NEITHER HAVE REPLIED
+              if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN AND NEITHER HAVE REPLIED 
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.WHITE+desc);
-              } else {
+              } else { // IF TICKET IS CLOSED AND NEITHER HAVE REPLIED
                 sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GRAY+desc);
               }
             }
@@ -126,12 +135,13 @@ public class tickets implements CommandExecutor {
             if (desc.length() > 42) {
               desc = desc.substring(0, 42)+"...";
             }
-            if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) {
+            if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF ONLY ADMIN HAS REPLIED
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
-              // if both have replied
-            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
+            } else if (rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF ONLY USER HAS REPLIED
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {   // IF BOTH HAVE REPLIED
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
-            } else {
+            } else if (rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) {   // IF NEITHER HAVE REPLIED
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GRAY+desc);
             }
           }
@@ -159,7 +169,7 @@ public class tickets implements CommandExecutor {
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           con = plugin.mysql.getConnection();
         } else {
-        con = service.getConnection();
+          con = service.getConnection();
         }
         stmt = con.createStatement();
         rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"' ORDER BY id ASC");   
@@ -170,24 +180,30 @@ public class tickets implements CommandExecutor {
           String desc = rs.getString("description");
           if (desc.length() > 42) {
             desc = desc.substring(0, 42)+"...";
-          }
-          if (!rs.getString("adminreply").equalsIgnoreCase("NONE")) {              
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+          }          
+          if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && rs.getString("userreply").equalsIgnoreCase("NONE")) { // IF THERE HAS BEEN AN ADMIN REPLY              
+            if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN WITH ADMIN REPLY
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
-            } else {
+            } else { // IF TICKET IS CLOSED WITH ADMIN REPLY
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
             }
-          } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) {
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
+          } else if (!rs.getString("userreply").equalsIgnoreCase("NONE") && rs.getString("adminreply").equalsIgnoreCase("NONE")) { // IF THERE HAS BEEN A USER REPLY              
+            if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN WITH USER REPLY
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            } else { // IF TICKET IS CLOSED WITH USER REPLY
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.YELLOW+desc);
+            }
+          } else if (!rs.getString("adminreply").equalsIgnoreCase("NONE") && !rs.getString("userreply").equalsIgnoreCase("NONE")) { //IF THERE HAS BEEN BOTH AN ADMIN AND USER REPLY
+            if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN WITH BOTH ADMIN AND USER REPLY
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.GOLD+desc);
-            } else {
+            } else { // IF TICKET IS CLOSED WITH BOTH ADMIN AND USER REPLY
               sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GOLD+desc);
             }
-          } else {
-            if (rs.getString("status").equalsIgnoreCase("OPEN")) {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
-            } else {
-              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.DARK_GRAY+desc);
+          } else { // IF THERE HAS BEEN NO REPLIES
+            if (rs.getString("status").equalsIgnoreCase("OPEN")) { // IF TICKET IS OPEN
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.WHITE+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GREEN+rs.getString("owner")+": "+ChatColor.WHITE+desc);
+            } else { // IF TICKET IS CLOSED
+              sender.sendMessage(ChatColor.GOLD+"("+ChatColor.GRAY+rs.getInt("id")+ChatColor.GOLD+") "+ChatColor.DARK_GRAY+rs.getString("owner")+": "+ChatColor.GRAY+desc);
             }
           }
         }

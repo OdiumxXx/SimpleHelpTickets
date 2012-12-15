@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.3
+version: 1.3.2
 commands:
    sht:
       aliases: [helptickets, simplehelptickets]
@@ -23,7 +23,7 @@ commands:
    replyticket:
       aliases: [rticket]
       description: reply to a help ticket
-      permission: sht.ticket
+      permission:
       usage: /replyticket <#> <reply>
    taketicket:
       description: Assign self to a help ticket

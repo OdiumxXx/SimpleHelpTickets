@@ -6,8 +6,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.bukkit.ChatColor;
-
 public class DBConnection {
   private static DBConnection instance = new DBConnection();
   public Connection con = null;
