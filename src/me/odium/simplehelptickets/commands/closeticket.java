@@ -79,7 +79,7 @@ public class closeticket implements CommandExecutor {
           if (player == null) {
             admin = "CONSOLE";          
           } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
-            admin = player.getDisplayName();          
+            admin = player.getName();          
           }
           
           //GET EXPIRATION DATE
