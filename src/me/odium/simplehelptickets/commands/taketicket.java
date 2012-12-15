@@ -135,7 +135,7 @@ public class taketicket implements CommandExecutor {
         player.teleport(locc);
       }
       // NOTIFY ADMIN AND USERS
-      String admin = player.getDisplayName();
+      String admin = player.getName();
       Player target = plugin.getServer().getPlayer(owner);
       //      String TicketReview = plugin.getConfig().getString("MessageOutput.TicketReviewMsg");
       // ASSIGN ADMIN
