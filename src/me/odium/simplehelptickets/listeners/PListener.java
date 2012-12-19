@@ -84,30 +84,34 @@ public class PListener implements Listener {
           rs.close();
           stmt.close();
         } else if(ticketTotal > 0) {
-          //          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
-          //          while (rs.next()) {
-          //            String date = rs.getString("date");
-          //            String expiration = rs.getString("expiration");
-          //            String id = rs.getString("id");           
-          //
-          //            // IF AN EXPIRATION HAS BEEN APPLIED 
-          //            if (!expiration.equalsIgnoreCase("NONE")) {
-          //              // CONVERT DATE-STRINGS FROM DB TO DATES 
-          //              Date dateNEW = new SimpleDateFormat("dd/MMM/yy HH:mm", Locale.ENGLISH).parse(date);
-          //              Date expirationNEW = new SimpleDateFormat("dd/MMM/yy HH:mm", Locale.ENGLISH).parse(expiration);
-          //              // COMPARE STRINGS
-          //              int HasExpired = dateNEW.compareTo(expirationNEW);
-          //              if (HasExpired >= 0) {
-          //                stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
-          //              }
-          //            }
-          //          }
-          //          rs.close();
-          //          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
-          //          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-          //            rs.next(); //sets pointer to first record in result set
-          //          }
-          //          int ticketTotal = rs.getInt("ticketTotal");
+         
+          // This is already handled onenable and ondisable - code is broken - and it's overkill anyways
+          
+//                    rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+//                    while (rs.next()) {
+//                      String date = rs.getString("date");
+//                      String expiration = rs.getString("expiration");
+//                      String id = rs.getString("id");           
+//          
+//                      // IF AN EXPIRATION HAS BEEN APPLIED 
+//                      if (!expiration.equalsIgnoreCase("NONE")) {
+//                        // CONVERT DATE-STRINGS FROM DB TO DATES 
+//                        Date dateNEW = new SimpleDateFormat("dd/MMM/yy HH:mm", Locale.ENGLISH).parse(date);
+//                        Date expirationNEW = new SimpleDateFormat("dd/MMM/yy HH:mm", Locale.ENGLISH).parse(expiration);
+//                        // COMPARE STRINGS
+//                        int HasExpired = dateNEW.compareTo(expirationNEW);
+//                        if (HasExpired >= 0) {
+//                          stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
+//                        }
+//                      }
+//                    }
+//                    rs.close();
+//                    rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal2 FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+//                    if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+//                      rs.next(); //sets pointer to first record in result set
+//                    }
+//                    int ticketTotal = rs.getInt("ticketTotal");
+          // END COMMENTOUT
 
           rs.close();
           rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
@@ -115,13 +119,14 @@ public class PListener implements Listener {
             rs.next(); //sets pointer to first record in result set
           }
           String adminreply = rs.getString("adminreply");
+          String status = rs.getString("status");
           if (DisplayTicketUser == true) {
 
-            if (adminreply.equalsIgnoreCase("NONE")) {
+            if (adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
               player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
               rs.close();
               stmt.close();
-            } else {
+            } else if (!adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
               player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));
               rs.close();
               stmt.close();

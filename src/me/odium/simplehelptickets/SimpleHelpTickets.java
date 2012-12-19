@@ -203,14 +203,14 @@ public class SimpleHelpTickets extends JavaPlugin {
 	} 
 
 	public String getExpiration(String date) {  
-		String ticketExpiration = getConfig().getString("TicketExpiration");
-		for (char c : ticketExpiration.toCharArray()) {
-			if (!Character.isDigit(c)) {
-				ticketExpiration = "7";
-			}
-		}
+		int expire = getConfig().getInt("TicketExpiration");
+//		for (char c : ticketExpiration.toCharArray()) {
+//			if (!Character.isDigit(c)) {
+//				ticketExpiration = "7";
+//			}
+//		}
 		SimpleDateFormat dtgFormat = null;
-		int expire = Integer.parseInt(ticketExpiration);
+//		int expire = Integer.parseInt(ticketExpiration);
 		Calendar cal = Calendar.getInstance();
 		cal.getTime();
 		cal.add(Calendar.DAY_OF_WEEK, expire);
@@ -261,8 +261,8 @@ public class SimpleHelpTickets extends JavaPlugin {
 					// COMPARE STRINGS
 					int HasExpired = dateNEW.compareTo(expirationNEW);
 					if (HasExpired >= 0) {
-						stmt2.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");
-						expirations++;          
+					  expirations++;
+						stmt2.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+id+"'");						          
 					} 
 				}
 			}
@@ -633,10 +633,9 @@ public class SimpleHelpTickets extends JavaPlugin {
        return message;             
      }
 
-     if (phrase == "NoTickets") {
-       prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
+     if (phrase == "NoTickets") {       
        output = replaceColorMacros(getOutputConfig().getString("NoTickets"));
-       message = prefix+output; 
+       message = output; 
        return message;             
      }
      if (phrase == "AdminJoin") {
