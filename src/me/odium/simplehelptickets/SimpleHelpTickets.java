@@ -98,6 +98,11 @@ public class SimpleHelpTickets extends JavaPlugin {
 		str = str.replace("&1", ChatColor.DARK_GRAY.toString());
 		str = str.replace("&2", ChatColor.GRAY.toString());
 		str = str.replace("&w", ChatColor.WHITE.toString());
+		str = str.replace("&bold", ChatColor.BOLD.toString());
+		str = str.replace("&italic", ChatColor.ITALIC.toString());
+		str = str.replace("&underline", ChatColor.UNDERLINE.toString());
+		str = str.replace("&strike", ChatColor.STRIKETHROUGH.toString());
+		str = str.replace("&reset", ChatColor.RESET.toString());
 		return str;
 	}
 	
@@ -276,40 +281,23 @@ public class SimpleHelpTickets extends JavaPlugin {
 
 	public void displayHelp(CommandSender sender) {
 	  sender.sendMessage(ChatColor.GOLD + "[ "+ChatColor.RED+"SimpleHelpTickets" + " v" + getDescription().getVersion() + ChatColor.RESET+ChatColor.GOLD + " ]");
-//	  sender.sendMessage(ChatColor.DARK_GREEN + " /helptickets" + ChatColor.WHITE + " - Display the commands menu");
 	  sender.sendMessage(getMessage("UserCommandsMenu-helptickets"));
-//	  sender.sendMessage(ChatColor.DARK_GREEN + " /helpme" + ChatColor.WHITE + " - Explain how to open a ticket");
 	  sender.sendMessage(getMessage("UserCommandsMenu-helpme"));
-//	  sender.sendMessage(ChatColor.GOLD + "[ " + "User Commands" + ChatColor.GOLD + " ]");
 	  sender.sendMessage(getMessage("UserCommandsMenu-Title"));
-//	  sender.sendMessage(ChatColor.GREEN + " /ticket <Description>" + ChatColor.WHITE + " - Open a Help ticket"+ChatColor.DARK_RED+ " [Stand @ Location]");
 	  sender.sendMessage(getMessage("UserCommandsMenu-ticket"));
-//	  sender.sendMessage(ChatColor.GREEN + " /tickets" + ChatColor.WHITE + " - View Your Tickets");
 	  sender.sendMessage(getMessage("UserCommandsMenu-tickets"));
-//	  sender.sendMessage(ChatColor.GREEN + " /checkticket <#>" + ChatColor.WHITE + " - Check one of your ticket's info");
 	  sender.sendMessage(getMessage("UserCommandsMenu-checkticket"));
-//	  sender.sendMessage(ChatColor.GREEN + " /replyticket <#> <Reply>" + ChatColor.WHITE + " - Reply to one of your tickets");
 	  sender.sendMessage(getMessage("UserCommandsMenu-replyticket"));
-//	  sender.sendMessage(ChatColor.GREEN + " /closeticket <#>" + ChatColor.WHITE + " - Close one of your tickets");
 	  sender.sendMessage(getMessage("UserCommandsMenu-closeticket"));
-//	  sender.sendMessage(ChatColor.GREEN + " /delticket <#>" + ChatColor.WHITE + " - Delete a ticket");
     sender.sendMessage(getMessage("UserCommandsMenu-delticket"));
-	  if(sender == null || sender.hasPermission("sht.admin")) {
-//	    sender.sendMessage(ChatColor.GOLD + "[ " + "Admin Commands" + ChatColor.RESET+ChatColor.GOLD + " ]");
+    if(sender == null || sender.hasPermission("sht.admin")) {
 	    sender.sendMessage(getMessage("AdminCommandsMenu-Title"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /tickets [ac]" + ChatColor.WHITE + " - List Open/All/Closed tickets");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-tickets"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA+ " /taketicket <#>" + ChatColor.WHITE + " - Assign yourself to a ticket");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-taketicket"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /replyticket <#> <Reply>" + ChatColor.WHITE + " - Reply to a ticket");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-replyticket"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /closeticket [r] <#>" + ChatColor.WHITE + " - Close or Reopen a ticket");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-closeticket"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /delticket <#>" + ChatColor.WHITE + " - Delete a ticket");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-delticket"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /purgetickets [-c/-a]" + ChatColor.WHITE + " - Purge expired, Closed or All tickets");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-purgeticket"));
-//	    sender.sendMessage(ChatColor.DARK_AQUA + " /helptickets reload" + ChatColor.WHITE + " - Reload the config");
 	    sender.sendMessage(getMessage("AdminCommandsMenu-reload"));
 	  }
 	}

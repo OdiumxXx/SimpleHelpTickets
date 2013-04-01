@@ -6,6 +6,8 @@
 # &c = Cyan   |  &C = DarkCyan
 # &b = Blue   |  &B = DarkBlue
 # &p = Purple |  &P = DarkPurple
+# Extra Formatting:
+# &bold | &italic | &underline | &strike | &reset
 #
 # &arg - The crucial argument, either Ticket ID# or ErrorMessage
 # &admin - Admin who triggered the command
@@ -41,7 +43,7 @@ NoPermission: '&rYou do not have permission'
 TicketAlreadyClosed: '&rTicket&w &arg &ralready closed'
 TicketClosed: '&wTicket&Y &arg &wClosed'
 TicketClosedOWNER: '&Y&admin &whas closed your ticket #:&Y &arg'
-TicketClosedADMIN: '&Y&admin &whas closed your ticket #:&Y &arg'
+TicketClosedADMIN: '&Y&admin &whas closed ticket #:&Y &arg'
 TicketNotClosed: '&rTicket&Y &arg&r not closed'
 TicketReopened: '&wTicket&Y &arg &wReopened'
 TicketReopenedOWNER: '&Y &admin&w has reopened your ticket #:&Y &arg'

@@ -8,8 +8,20 @@
 # &b = Blue   |  &B = DarkBlue
 # &p = Purple |  &P = DarkPurple
 #
-#
-# Permisions:
+# CONFIGURATION:
+# -MaxTickets
+#   Maximum number of tickets per user.
+# -TicketExpiration
+#   Number of days before a closed ticket expires
+# -NotifyAdminOnTicketClose
+#   Users with the sht.admin permission will receive a message when a ticket is closed.
+# -MultiWorld
+#   If using more than one world, take/check ticket will display the appropriate world name in ticket details
+# -OnJoin
+#   Display number of personal tickets to user / total tickets to admin upon join
+# -USE_MYSQL
+#   Whether to use MySQL instead of SQLite
+# PERMISSONS:
 # sht.ticket - Create help tickets
 # sht.admin - Administrate tickets
 #

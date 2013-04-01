@@ -70,9 +70,20 @@ public class MySQLConnection extends Database {
 	 * 
 	 * */
 
-	public Connection getConnection() {
-		return connection;
-	}
+//	public Connection getConnection() {
+//		return connection;
+//	}
+  public Connection getConnection() {
+    if (checkConnection() == false) {
+      try {
+      this.close();
+      this.open();
+      } catch(Exception e) {
+        plugin.log.info("[SimpleHelpTickets] "+"Error: "+e);
+      }
+    }
+    return connection;
+  }
 
 	/**
 	 * checks if the connection is still active
