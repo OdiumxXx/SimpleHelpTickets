@@ -7,7 +7,7 @@
 # &b = Blue   |  &B = DarkBlue
 # &p = Purple |  &P = DarkPurple
 # Extra Formatting:
-# &bold | &italic | &underline | &strike | &reset
+# %bold | %italic | %underline | %strike | %reset
 #
 # &arg - The crucial argument, either Ticket ID# or ErrorMessage
 # &admin - Admin who triggered the command

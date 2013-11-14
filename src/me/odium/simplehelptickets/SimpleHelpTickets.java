@@ -98,11 +98,11 @@ public class SimpleHelpTickets extends JavaPlugin {
 		str = str.replace("&1", ChatColor.DARK_GRAY.toString());
 		str = str.replace("&2", ChatColor.GRAY.toString());
 		str = str.replace("&w", ChatColor.WHITE.toString());
-		str = str.replace("&bold", ChatColor.BOLD.toString());
-		str = str.replace("&italic", ChatColor.ITALIC.toString());
-		str = str.replace("&underline", ChatColor.UNDERLINE.toString());
-		str = str.replace("&strike", ChatColor.STRIKETHROUGH.toString());
-		str = str.replace("&reset", ChatColor.RESET.toString());
+		str = str.replace("%bold", ChatColor.BOLD.toString());
+		str = str.replace("%italic", ChatColor.ITALIC.toString());
+		str = str.replace("%underline", ChatColor.UNDERLINE.toString());
+		str = str.replace("%strike", ChatColor.STRIKETHROUGH.toString());
+		str = str.replace("%reset", ChatColor.RESET.toString());
 		return str;
 	}
 	
@@ -600,14 +600,14 @@ public class SimpleHelpTickets extends JavaPlugin {
        return message;             
      }
      
-     if (phrase == "TicketOpen") {
+     if (phrase == "TicketOpen") { // You have successfully opened a &YHelp Ticket&g, please wait for it to be reviewed"
        prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
        output = replaceColorMacros(getOutputConfig().getString("TicketOpen"));
        message = prefix+output; 
        return message;             
      }
      
-     if (phrase == "TicketOpenADMIN") {
+     if (phrase == "TicketOpenADMIN") { // %player &whas opened a &YHelp Ticket
        prefix =  replaceColorMacros(getOutputConfig().getString("Prefix"));
        output = replaceColorMacros(getOutputConfig().getString("TicketOpenADMIN"));
        message = prefix+output; 
