@@ -91,10 +91,14 @@ public class MySQLConnection extends Database {
 	 * @return true if still active
 	 * */
 	public boolean checkConnection() {
-		if (connection != null) {
-			return true;
-		}
-		return false;
+        try {
+            if (connection != null && connection.isValid(2)) {
+                return true;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return false;
 	}
 
 	/**
