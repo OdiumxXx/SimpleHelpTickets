@@ -53,12 +53,10 @@ public class PListener implements Listener {
             stmt.close();
           } else if(ticketTotal > 0) {
             player.sendMessage(plugin.getMessage("AdminJoin").replace("&arg", ticketTotal+""));
-            //            player.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD+"* "+ChatColor.WHITE + "There are currently " + ChatColor.GOLD + ticketTotal + ChatColor.WHITE+ " open Help Tickets");
             rs.close();
             stmt.close();
           }
         } catch(Exception e) {
-          //          plugin.log.info(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Error: "+plugin.WHITE+e);
           plugin.log.info(plugin.getMessage("Error").replace("&arg", e.toString()));
         }
 
@@ -78,24 +76,25 @@ public class PListener implements Listener {
 
             int ticketTotal = rs.getInt("ticketTotal");
             if (ticketTotal == 0) {
-              // DO NOTHING
-              plugin.log.info("ticketTotal == 0");
+              // DO NOTHING              
               rs.close();
               stmt.close();
-            } else if(ticketTotal > 0) {
-              plugin.log.info("ticketTotal > 0");
+            } else if(ticketTotal > 0) {              
               rs.close();
               rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+              int openNumber = 0;              
               while (rs.next()) {
                 String adminreply = rs.getString("adminreply");
                 String status = rs.getString("status");
-                if (DisplayTicketUser == true) {
-                  if (adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
-                    player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));                                    
-                  } else if (!adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
-                    player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));              
-                  }
+                if (status.equalsIgnoreCase("OPEN")) {
+                  openNumber++;
+                }                
+                if (!adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
+                  player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));
                 }
+              }              
+              if (DisplayTicketUser == true && openNumber > 0) {                
+                player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", openNumber+""));              
               }
               rs.close();
               stmt.close();      
@@ -118,21 +117,22 @@ public class PListener implements Listener {
             } else if(ticketTotal > 0) {
               rs.close();
               rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+              int openNumber = 0;
 
               while (rs.next()) {
                 String adminreply = rs.getString("adminreply");
                 String status = rs.getString("status");
-
-                if (DisplayTicketUser == true) {
-                  if (adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
-                    player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", ticketTotal+""));
-                    plugin.log.info("send UserJoin");                    
-                  } else if (!adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
-                    player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));
-                    plugin.log.info("send UserJoin-TicketReplied");
-                  }
+                if (status.equalsIgnoreCase("OPEN")) {
+                  openNumber++;
+                }                
+                if (!adminreply.equalsIgnoreCase("NONE") && status.equalsIgnoreCase("OPEN")) {
+                  player.sendMessage(plugin.getMessage("UserJoin-TicketReplied"));
                 }
               }
+              if (DisplayTicketUser == true && openNumber > 0) {                
+                player.sendMessage(plugin.getMessage("UserJoin").replace("&arg", openNumber+""));              
+              }
+
               rs.close();
               stmt.close();
             }

@@ -2,6 +2,7 @@ package me.odium.simplehelptickets.commands;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
@@ -37,6 +38,9 @@ public class ticket implements CommandExecutor {
   String userreply;
 
   DBConnection service = DBConnection.getInstance();
+  ResultSet rs;
+  Connection con;          
+  java.sql.Statement stmt;
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)  {    
     Player player = null;
@@ -62,11 +66,7 @@ public class ticket implements CommandExecutor {
             sb.append(details);
             sb.append(" ");
           }
-          String details = sb.toString();  
-
-          Connection con;
-          @SuppressWarnings("unused")
-          java.sql.Statement stmt;
+          String details = sb.toString();            
 
           if (player == null) {     
             // SET VARIABLES FOR CONSOLE
@@ -103,6 +103,26 @@ public class ticket implements CommandExecutor {
           // REFERENCE CONNECTION AND ADD DATA
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {              
 
+            // CHECK MAX TICKETS
+            int maxTickets = plugin.getConfig().getInt("MaxTickets"); // Get Ticket Limit from config            
+
+            try {
+              con = plugin.mysql.getConnection();
+              stmt = con.createStatement();              
+              rs = stmt.executeQuery("SELECT COUNT(owner) AS ticketTotal FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");              
+              rs.next(); //sets pointer to first record in result set (NEED FOR MySQL)
+              
+              int ticketTotal = rs.getInt("ticketTotal"); // GET TOTAL NUMBER OF PLAYERS TICKETS
+              if (ticketTotal >= maxTickets) { // IF MAX TICKETS REACHED
+                sender.sendMessage(plugin.getMessage("TicketMax"));              
+                return true;
+              }
+            } catch (SQLException e) {
+              sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+            }
+
+            // END CHECK MAX TICKETS
+            
             try {
               con = plugin.mysql.getConnection();
               stmt = con.createStatement();
@@ -143,6 +163,25 @@ public class ticket implements CommandExecutor {
             }
 
           } else {
+            
+            // CHECK MAX TICKETS
+            int maxTickets = plugin.getConfig().getInt("MaxTickets"); // Get Ticket Limit from config
+
+            try {
+              con = service.getConnection();
+              stmt = con.createStatement();              
+              rs = stmt.executeQuery("SELECT COUNT(owner) AS ticketTotal FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");
+
+              int ticketTotal = rs.getInt("ticketTotal"); // GET TOTAL NUMBER OF PLAYERS TICKETS
+              if (ticketTotal >= maxTickets) { // IF MAX TICKETS REACHED
+                sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", Integer.toString(maxTickets)));              
+                return true;
+              }
+            } catch (SQLException e) {
+              sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+            }
+            // END CHECK MAX TICKETS
+
             try {        
               con = service.getConnection();
               stmt = con.createStatement();

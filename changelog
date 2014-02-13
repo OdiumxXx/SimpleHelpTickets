@@ -1,0 +1,94 @@
+Configuration:
+ • MaxTickets
+    Maximum number of tickets per user.
+ • TicketExpiration
+    Number of days before a closed ticket expires
+ • NotifyAdminOnTicketClose
+    Users with the sht.admin permission will receive a message when a ticket is closed.
+ • MultiWorld
+    If using more than one world, take/check ticket will display the appropriate world name in ticket details
+ • OnJoin
+    Display number of personal tickets to user / total tickets to admin upon join
+ • USE_MYSQL
+    Whether to use MySQL instead of SQLite
+
+output.yml
+ • Use to customize plugin output (Language / Formatting)
+
+Commands:
+ • /helptickets - SimpleHelpTickets Menu.
+ • /ticket (description) - Open a help ticket.
+ • /tickets [-a/-c] - List Open/All/Closed tickets.
+ • /checkticket <#> - Check the details of a ticket.
+ • /taketicket <#> - Assign self to a ticket. (and be teleported to the location is was set)
+ • /replyticket <#> <reply> - Reply to a ticket
+ • /closeticket [-r] <#> - Close a help ticket.
+ • /delticket (#) - Reply to a help ticket.
+ • /purgetickets [-c/-a] - Purge expired, Closed or All tickets
+Permissions:
+ • sht.ticket - Open a help ticket.
+ • sht.admin - Administrate help tickets.
+ ---------------------------------------------
+
+0.8
+- Fixed sanity checking for checkticket, replyticket & closeticket
+- Fixed console commands for reloading SimpleHelpTickets Config.
+0.9.7
+- BugFix: Fixed bug causing tickets not to expire (bumpducknan)
+- BugFix: Custom Message Output on Open Message not triggering.
+- Added: purgetickets -a (Purge all closed tickets)
+0.9.8
+- Bugfix: Maxtickets not limiting user tickets
+- Added: Alias /Grief to command /ticket <descritpion>
+0.9.9
+- Fixed/Added MySQL Support
+- Added: Admins bypass ticket limit
+- Updated: Default Plugin output (config.yml)
+0.1
+- Major Bugfix: Open Tickets expiring on server restart for those using MySQL
+- Added: Included Name of World in which ticket was submitted (config option)
+- Added: User Replies - Users can now respond to admin replies with user replies.
+- Updated: How config reloads are handled
+- Updated: Exported Plugin Output to output.yml (Users can now Customize language etc)
+- **MUST DELETE OLD DATABASE TO UPDATE**
+  
+1.1
+- Minor Bugfix: TakeTicket showing harmless error to user when ticket-owner not online.
+- Minor Bugfix: Default colours for TicketOpenADMIN updated.
+
+1.3
+- Added more output to output.yml (/ticket, PlayerJoinEvents and Main Menu)
+- Added notice to user on join if admin has replied to their ticket
+- Fixed error on /taketicket with no paramater
+- Fixed nullpointerexception onplayerjoin when using SQL
+1.3.1
+- Bugfix: Maxtickets limit not triggering for MySQL (Fronix)
+1.3.2
+- Minor Bugfix: SHT assuming that those with sht.admin would also inherit sht.ticket. Rarely would it be otherwise, however assumptions are bad all the same.
+- Minor Bugfix: Updated Open/Closed/AdminReplied/UserReplied Ticket Colours to be more consistent
+1.3.3
+- minor bugfix: Users rceiving notification about open tickets even if tickt is/are closed
+- minor bugfix: Prefix removed from 'No Tickets To Display' message
+- instances of getDisplayName changed to getName in closeticket & taketicket (Fronix) 
+- A few typos in output.yml have been fixed (if your output.yml is unchanged, delete it before starting your server to generate a new one)
+1.3.4
+- Added bold/italic/underline/strike/reset to output.yml
+- Fixed typo in output.yml
+- Added check to getconnection in mysqlconnection.java to ensure connection is established, and if not re-stablish connection before continuing.
+1.3.5
+- Updated extra formatting to not interfere with colour codes
+- Recoded ticket.class 
+- Fixed "CONSOLE" has opened a ticket bug for MySQL users
+- Fixed notification of admin reply on user join
+1.3.6
+- FIXED: MaxTickets not limiting the amount of tickets a user can open 
+- FIXED: User OnJoin notification of open tickets repeating itself
+- FIXED: MySQL Connection Check. (Merged PR: TheCutter)
+
+Todo:
+Rewrite replyticket
+
+Suggestion:
+Coloured ticket for a taken ticket, and a key to describe different colours meaninsg
+Remove colour codes from config (useless?)
+AutoIncrement for SQL doesn't decrease upon ticket removal
