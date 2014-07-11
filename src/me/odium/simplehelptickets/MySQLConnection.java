@@ -56,7 +56,7 @@ public class MySQLConnection extends Database {
 	
   public void createTable() {    
     try {      
-      String queryC = "CREATE TABLE IF NOT EXISTS SHT_Tickets (id INTEGER AUTO_INCREMENT PRIMARY KEY, description varchar(128), date timestamp, owner varchar(16) collate latin1_swedish_ci, world varchar(30), x double(30,20), y double(30,20), z double(30,20), p double(30,20), f double(30,20), adminreply varchar(128), userreply varchar(128), status varchar(16), admin varchar(30) collate latin1_swedish_ci, expiration timestamp NULL DEFAULT NULL)";
+      String queryC = "CREATE TABLE IF NOT EXISTS SHT_Tickets (id INTEGER AUTO_INCREMENT PRIMARY KEY, description varchar(128), date timestamp, uuid varchar(36), world varchar(30), x double(30,20), y double(30,20), z double(30,20), p double(30,20), f double(30,20), adminreply varchar(128), userreply varchar(128), status varchar(16), admin varchar(30) collate latin1_swedish_ci, expiration timestamp NULL DEFAULT NULL)";
       this.query(queryC);          
     } catch(Exception e) {
       plugin.log.info("[SimpleHelpTickets] "+"Error: "+e);
@@ -90,18 +90,19 @@ public class MySQLConnection extends Database {
 	 * 
 	 * @return true if still active
 	 * */
-	public boolean checkConnection() {
-        try {
-            if (connection != null && connection.isValid(2)) {
-                return true;
-            }
-        } catch (SQLException e) {
-            return false;
-        }
-        return false;
-	}
+  public boolean checkConnection() {
+    try {
+      if (connection != null && connection.isValid(2)) {
+        return true;
+      }
+    } catch (SQLException e) {
+      return false;
+    }
+    return false;
 
-	/**
+  }
+
+  /**
 	 * Query the database
 	 * 
 	 * @param query the database query

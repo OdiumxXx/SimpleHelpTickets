@@ -4,6 +4,8 @@ import java.io.File;
 
 import me.odium.simplehelptickets.SimpleHelpTickets;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -61,7 +63,12 @@ public class sht implements CommandExecutor {
         sender.sendMessage(plugin.getMessage("NoPermission"));
         return true;
       }
-    }    
+    } else if (args.length == 1 && args[0].equalsIgnoreCase("check")) {
+      String uuid = player.getUniqueId().toString();
+      player.sendMessage(ChatColor.BLUE+"Your UUID: "+ChatColor.RESET+uuid);
+      String uuidName = Bukkit.getOfflinePlayer(uuid).getName();
+      player.sendMessage(ChatColor.BLUE+"Your Name "+ChatColor.RESET+uuidName);
+    }
 
     return true;    
   }

@@ -43,13 +43,13 @@ public class delticket implements CommandExecutor {
         }
       }
 
-//CONSOLE COMMANDS
+      //CONSOLE COMMANDS
       if (player == null) {
         try {
           if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
             con = plugin.mysql.getConnection();
           } else {
-          con = service.getConnection();
+            con = service.getConnection();
           }
           stmt = con.createStatement();
           //CHECK IF TICKET EXISTS
@@ -78,70 +78,48 @@ public class delticket implements CommandExecutor {
           sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
           return true;
         }
-// PLAYER COMMANDS
-    } else {
-      try {
-        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-          con = plugin.mysql.getConnection();
-        } else {
-        con = service.getConnection();
-        }
-        stmt = con.createStatement();
-        //CHECK IF TICKET EXISTS
-        rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+args[0]+"'");
-        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-          rs.next(); //sets pointer to first record in result set
-        }
-        if (rs.getInt("ticketTotal") == 0) {
-          sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+        // PLAYER COMMANDS
+      } else {
+        try {
+          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+            con = plugin.mysql.getConnection();
+          } else {
+            con = service.getConnection();
+          }
+          stmt = con.createStatement();
+          //CHECK IF TICKET EXISTS
+          rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE id='"+args[0]+"'");
+          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+            rs.next(); //sets pointer to first record in result set
+          }
+          if (rs.getInt("ticketTotal") == 0) {
+            sender.sendMessage(plugin.getMessage("TicketNotExist").replace("&arg", args[0]));
+            rs.close();
+            stmt.close();
+            return true;
+          }
           rs.close();
-          stmt.close();
-          return true;
-        }
-        rs.close();
-        rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + args[0] + "'");
-        if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
-          rs.next(); //sets pointer to first record in result set
-        }
-        String Playername = player.getName();
-        if (!rs.getString("owner").contains(Playername) && !player.hasPermission("sht.admin")) {
-          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+rs.getString("id")+" is not your ticket to delete.");
-          return true;
-        } else {
-//          try {
-//            con = service.getConnection();
-//            stmt = con.createStatement();
-
+          rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE id='" + args[0] + "'");
+          if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
+            rs.next(); //sets pointer to first record in result set
+          }
+          String playerUUID = player.getUniqueId().toString();
+          if (!rs.getString("uuid").equals(playerUUID) && !player.hasPermission("sht.admin")) {
+            sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+rs.getString("id")+" is not your ticket to delete.");
+            return true;
+          } else {
             stmt.executeUpdate("DELETE FROM SHT_Tickets WHERE id='"+args[0]+"'");
             sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.WHITE+"Ticket "+ChatColor.GOLD+args[0]+ChatColor.WHITE+" Deleted");
             rs.close();
             stmt.close();            
             return true;
-//          } catch(Exception e) {
-//            if (e.toString().contains("ResultSet closed")) {
-//              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+args[0]+" does not exist!");
-//              return true;
-//            } else {
-//              sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Error: "+plugin.WHITE+e);
-//              return true;
-//            }   
-//          }
-        }
-      } catch(Exception e) {
-//        if (e.toString().contains("ResultSet closed")) {
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+args[0]+" does not exist!");
-//          return true;
-//        } else {
-        sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
+          }
+        } catch(Exception e) {
+          sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
           return true;
         }     
       }
     }
-
-
- 
-
-  
     return true;
   }
 }

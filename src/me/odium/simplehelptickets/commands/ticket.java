@@ -23,7 +23,7 @@ public class ticket implements CommandExecutor {
   }
 
   String date;
-  String owner;
+  String uuid;
   String world;
   double locX;
   double locY;
@@ -71,7 +71,7 @@ public class ticket implements CommandExecutor {
           if (player == null) {     
             // SET VARIABLES FOR CONSOLE
             date = plugin.getCurrentDTG("date");
-            owner = "CONSOLE";
+            uuid = "CONSOLE";
             world = "NONE";
             locX = 00;
             locY = 00;
@@ -86,7 +86,7 @@ public class ticket implements CommandExecutor {
           } else {
             // SET VARIABLES FOR PLAYER
             date = plugin.getCurrentDTG("date");
-            owner = player.getName();
+            uuid = player.getUniqueId().toString();
             world = player.getWorld().getName();
             locX = player.getLocation().getX();
             locY = player.getLocation().getY();
@@ -109,12 +109,12 @@ public class ticket implements CommandExecutor {
             try {
               con = plugin.mysql.getConnection();
               stmt = con.createStatement();              
-              rs = stmt.executeQuery("SELECT COUNT(owner) AS ticketTotal FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");              
+              rs = stmt.executeQuery("SELECT COUNT(uuid) AS ticketTotal FROM SHT_Tickets WHERE uuid='"+uuid+"' AND status='OPEN'");              
               rs.next(); //sets pointer to first record in result set (NEED FOR MySQL)
               
               int ticketTotal = rs.getInt("ticketTotal"); // GET TOTAL NUMBER OF PLAYERS TICKETS
               if (ticketTotal >= maxTickets) { // IF MAX TICKETS REACHED
-                sender.sendMessage(plugin.getMessage("TicketMax"));              
+                sender.sendMessage(plugin.getMessage("TicketMax").replace("&arg", Integer.toString(maxTickets)));              
                 return true;
               }
             } catch (SQLException e) {
@@ -126,12 +126,12 @@ public class ticket implements CommandExecutor {
             try {
               con = plugin.mysql.getConnection();
               stmt = con.createStatement();
-              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, owner, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
+              PreparedStatement statement = con.prepareStatement("insert into SHT_Tickets(description, date, uuid, world, x, y, z, p, f, adminreply, userreply, status, admin, expiration) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
               // INSERT INTO lyrics1(name, artist) values(?, ?) [Example]
 
               statement.setString(1, details);              
               statement.setString(2, date );             
-              statement.setString(3, owner);
+              statement.setString(3, uuid);
               statement.setString(4, world);
               statement.setDouble(5, locX);
               statement.setDouble(6, locY);
@@ -152,8 +152,8 @@ public class ticket implements CommandExecutor {
               // Notify admin of new ticket
               Player[] players = Bukkit.getOnlinePlayers();
               for(Player onlinePlayer: players){ // for every player online
-                if(onlinePlayer.hasPermission("sht.admin") && onlinePlayer.getName() != owner) { // if admin perm & not ticket owner                     
-                  onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", owner));
+                if(onlinePlayer.hasPermission("sht.admin") && onlinePlayer.getUniqueId().toString() != uuid) { // if admin perm & not ticket owner                     
+                  onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
                 }
               }
 
@@ -170,7 +170,7 @@ public class ticket implements CommandExecutor {
             try {
               con = service.getConnection();
               stmt = con.createStatement();              
-              rs = stmt.executeQuery("SELECT COUNT(owner) AS ticketTotal FROM SHT_Tickets WHERE owner='"+owner+"' AND status='OPEN'");
+              rs = stmt.executeQuery("SELECT COUNT(uuid) AS ticketTotal FROM SHT_Tickets WHERE uuid='"+uuid+"' AND status='OPEN'");
 
               int ticketTotal = rs.getInt("ticketTotal"); // GET TOTAL NUMBER OF PLAYERS TICKETS
               if (ticketTotal >= maxTickets) { // IF MAX TICKETS REACHED
@@ -190,7 +190,7 @@ public class ticket implements CommandExecutor {
 
               statement.setString(2, details);              
               statement.setString(3, date);             
-              statement.setString(4, owner);
+              statement.setString(4, uuid);
               statement.setString(5, world);
               statement.setDouble(6, locX);
               statement.setDouble(7, locY);
@@ -211,8 +211,8 @@ public class ticket implements CommandExecutor {
               // Notify admin of new ticket
               Player[] players = Bukkit.getOnlinePlayers();
               for(Player onlinePlayer: players){ // for every player online
-                if(onlinePlayer.hasPermission("sht.admin") && onlinePlayer.getName() != owner) {     // if admin permissiong                     
-                  onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", owner));
+                if(onlinePlayer.hasPermission("sht.admin")) {     // if admin permission                     
+                  onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
                 }
               }
             } catch(Exception e) {

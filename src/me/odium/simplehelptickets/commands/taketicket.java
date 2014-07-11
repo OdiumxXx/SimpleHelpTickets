@@ -82,7 +82,9 @@ public class taketicket implements CommandExecutor {
       }
 
       String id = rs.getString("id");
-      String owner = rs.getString("owner");
+      //String owner = rs.getString("owner");
+      String UUID = rs.getString("UUID");
+      String owner = Bukkit.getOfflinePlayer(UUID).getName();
       if (plugin.getConfig().getBoolean("MultiWorld") == true) {
         worldName = rs.getString("world");
       }
@@ -136,21 +138,18 @@ public class taketicket implements CommandExecutor {
       }
       // NOTIFY ADMIN AND USERS
       String admin = player.getName();
-      Player target = plugin.getServer().getPlayer(owner);
-      //      String TicketReview = plugin.getConfig().getString("MessageOutput.TicketReviewMsg");
+      Player target = plugin.getServer().getPlayer(UUID);
       // ASSIGN ADMIN
       stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
       // NOTIFY -OTHER- ADMINS 
       Player[] players = Bukkit.getOnlinePlayers();
       for(Player op: players){
         if(op.hasPermission("sht.admin") && op != player) {
-          //          op.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD + admin + ChatColor.WHITE + " is reviewing ticket #: "+ChatColor.GOLD+id);
           op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));
         }
       }
       // NOTIFY USER
       if (target != null && target != player) {
-        //        target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketReview).replace("%id%", id).replace("%admin%", admin));
         target.sendMessage(plugin.getMessage("TakeTicketOWNER").replace("&arg", id).replace("&admin", admin));   
 
         stmt.close();

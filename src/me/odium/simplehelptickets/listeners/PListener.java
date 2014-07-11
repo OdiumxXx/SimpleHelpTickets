@@ -71,7 +71,7 @@ public class PListener implements Listener {
           try {
             con = plugin.mysql.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );      
+            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE uuid='"+player.getUniqueId().toString()+"'" );      
             rs.next(); //sets pointer to first record in result set
 
             int ticketTotal = rs.getInt("ticketTotal");
@@ -81,7 +81,7 @@ public class PListener implements Listener {
               stmt.close();
             } else if(ticketTotal > 0) {              
               rs.close();
-              rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+              rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE uuid='"+player.getUniqueId().toString()+"'" );
               int openNumber = 0;              
               while (rs.next()) {
                 String adminreply = rs.getString("adminreply");
@@ -107,7 +107,7 @@ public class PListener implements Listener {
           try {
             con = service.getConnection();
             stmt = con.createStatement();
-            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+            rs = stmt.executeQuery("SELECT COUNT(id) AS ticketTotal FROM SHT_Tickets WHERE uuid='"+player.getUniqueId().toString()+"'" );
 
             int ticketTotal = rs.getInt("ticketTotal");
             if (ticketTotal == 0) {
@@ -116,7 +116,7 @@ public class PListener implements Listener {
               stmt.close();
             } else if(ticketTotal > 0) {
               rs.close();
-              rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE owner='"+player.getName()+"'" );
+              rs = stmt.executeQuery("SELECT * FROM SHT_Tickets WHERE uuid='"+player.getUniqueId().toString()+"'" );
               int openNumber = 0;
 
               while (rs.next()) {

@@ -55,7 +55,7 @@ public class closeticket implements CommandExecutor {
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           con = plugin.mysql.getConnection();
         } else {
-        con = service.getConnection();
+          con = service.getConnection();
         }
         stmt = con.createStatement();
         // GET TICKETRFROM DB
@@ -71,25 +71,25 @@ public class closeticket implements CommandExecutor {
           return true;
         }
         // CHECK THE OWNER OF THE TICKET, AND GET CUSTOM OUTPUT FROM CONFIG
-        Player target = Bukkit.getPlayer(rs.getString("owner"));
+        Player target = Bukkit.getPlayer(rs.getString("uuid"));
 
         // IF PLAYER IS CONSOLE, TICKETOWNER, OR ADMIN
-        if (player == null || rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {
+        if (player == null || rs.getString("uuid").equals(player.getUniqueId().toString()) || player.hasPermission("sht.admin")) {
           // SET THE ADMIN VARIABLE TO REFLECT CONSOLE/ADMIN
           if (player == null) {
             admin = "CONSOLE";          
-          } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
+          } else if (rs.getString("uuid").contains(player.getUniqueId().toString()) || player.hasPermission("sht.admin")) {          
             admin = player.getName();          
           }
-          
+
           //GET EXPIRATION DATE
           String date = rs.getString("date");
           String expiration = plugin.getExpiration(date);
-          
+
           // UPDATE THE TICKET
           stmt.executeUpdate("UPDATE SHT_Tickets SET status='"+"CLOSED"+"', admin='"+admin+"', expiration='"+expiration+"' WHERE id='"+id+"'");
           sender.sendMessage(plugin.getMessage("TicketClosed").replace("&arg", ""+id));
-          
+
           stmt.close();
           rs.close();
           // IF TICKETOWNER IS ONLINE, AND NOT THE USER WHO TRIGGERED THE EVENT, LET THEM KNOW OF THE CHANGE TO THEIR TICKET
@@ -138,7 +138,7 @@ public class closeticket implements CommandExecutor {
         if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
           con = plugin.mysql.getConnection();
         } else {
-        con = service.getConnection();
+          con = service.getConnection();
         }
         stmt = con.createStatement();
         // GET TICKET FROM DB
@@ -148,41 +148,36 @@ public class closeticket implements CommandExecutor {
         }
         // CHECK TICKET IS NOT ALREADY OPEN, IF SO END HERE.
         if (rs.getString("status").equalsIgnoreCase("OPEN")) {
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.RED+"Ticket "+ChatColor.GOLD+args[0]+ChatColor.RED+" not closed");
           sender.sendMessage(plugin.getMessage("TicketNotClosed").replace("&arg", args[1]));
           rs.close();
           stmt.close();
           return true;
         }
         // CHECK THE OWNER OF THE TICKET, AND GET CUSTOM OUTPUT FROM CONFIG       
-        Player target = Bukkit.getPlayer(rs.getString("owner"));        
+        Player target = Bukkit.getPlayer(rs.getString("uuid"));        
         // IF PLAYER IS CONSOLE OR ADMIN
         if (player == null || player.hasPermission("sht.admin")) {
           // SET THE ADMIN VARIABLE TO RELECT CONSOLE/ADMIN
           if (player == null) {
             admin = "CONSOLE";          
-          } else if (rs.getString("owner").contains(player.getName()) || player.hasPermission("sht.admin")) {          
+          } else if (rs.getString("uuid").contains(player.getUniqueId().toString()) || player.hasPermission("sht.admin")) {          
             admin = player.getName();          
           }
           // UPDATE THE TICKET
           stmt.executeUpdate("UPDATE SHT_Tickets SET status='"+"OPEN"+"', admin='"+admin+"', expiration=NULL WHERE id='"+id+"'");
-//          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.WHITE+"Ticket "+ChatColor.GOLD+id+ChatColor.WHITE+" Reopened");
+
           sender.sendMessage(plugin.getMessage("TicketReopened").replace("&arg", ""+id).replace("&admin", admin));
           stmt.close();
           rs.close();
           // IF TICKETOWNER IS ONLINE, TELL THEM OF CHANGES TO THEIR TICKET
           if (target != null && target != player) {             
-           
-//              target.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+plugin.replaceColorMacros(TicketReOpen).replace("%id%", ""+id).replace("%admin%", admin));
             target.sendMessage(plugin.getMessage("TicketReopenedOWNER").replace("&arg", ""+id).replace("&admin", admin));
-         
           }
           // INFORM ADMINS OF CHANGES TOT ICKET
           Player[] players = Bukkit.getOnlinePlayers();
           for(Player op: players){
             if(op.hasPermission("sht.admin") && plugin.getConfig().getBoolean("NotifyAdminOnTicketClose") && op != sender) {
-//              op.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.GOLD + admin + ChatColor.WHITE + " has reopened ticket " + ChatColor.GOLD + args[0]);
-                op.sendMessage(plugin.getMessage("TicketReopenedADMIN").replace("&arg", ""+id).replace("&admin", admin));
+              op.sendMessage(plugin.getMessage("TicketReopenedADMIN").replace("&arg", ""+id).replace("&admin", admin));
             }
           }
           return true;
@@ -196,12 +191,10 @@ public class closeticket implements CommandExecutor {
           return true;
         } else {
           sender.sendMessage(plugin.getMessage("Error").replace("&arg", e.toString()));
-        return true;
+          return true;
+        }
       }
-      }
-
     }
-
     return true; 
   }
 }

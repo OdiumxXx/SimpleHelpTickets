@@ -38,7 +38,6 @@ public class replyticket implements CommandExecutor {
 
       for (char c : args[0].toCharArray()) {
         if (!Character.isDigit(c)) {
-          //          sender.sendMessage(plugin.GRAY+"[SimpleHelpTickets] "+ChatColor.RED + "Invalid Ticket Number: " + ChatColor.WHITE + args[0]);
           sender.sendMessage(plugin.getMessage("InvalidTicketNumber").replace("&arg", args[0]));
           return true;
         }
@@ -97,7 +96,7 @@ public class replyticket implements CommandExecutor {
                 if (plugin.getConfig().getBoolean("MySQL.USE_MYSQL")) {
                   rs.next(); //sets pointer to first record in result set
                 }
-                Player target = Bukkit.getPlayer(rs.getString("owner"));          
+                Player target = Bukkit.getPlayer(rs.getString("uuid"));          
                 if (target != null) {
                   target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
                   return true;                  
@@ -142,7 +141,7 @@ public class replyticket implements CommandExecutor {
                 rs.next(); //sets pointer to first record in result set
               }
               // IF PLAYER IS THE TICKET OWNER
-              if (player.getName().equalsIgnoreCase(rs.getString("owner"))) {                
+              if (player.getUniqueId().equals((rs.getString("uuid")))) {                
 
                 stmt.executeUpdate("UPDATE SHT_Tickets SET userreply='"+details+"' WHERE id='"+id+"'");
                 sender.sendMessage(plugin.getMessage("AdminRepliedToTicket").replace("&arg", id));
@@ -203,7 +202,7 @@ public class replyticket implements CommandExecutor {
                     rs.next(); //sets pointer to first record in result set
                   }
                   // INFORM TICKET-OWNER THAT AN ADMIN REPLIED TO THEIR TICKET
-                  Player target = Bukkit.getPlayer(rs.getString("owner"));          
+                  Player target = Bukkit.getPlayer(rs.getString("uuid"));          
                   if (target != null && target != player) {
                     target.sendMessage(plugin.getMessage("AdminRepliedToTicketOWNER").replace("&arg", id).replace("&admin", admin));
                     return true;
