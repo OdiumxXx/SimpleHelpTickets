@@ -2,6 +2,7 @@ package me.odium.simplehelptickets.commands;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Collection;
 
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
@@ -97,7 +98,7 @@ public class closeticket implements CommandExecutor {
             target.sendMessage(plugin.getMessage("TicketClosedOWNER").replace("&arg", ""+id).replace("&admin", admin));
           }
           // NOTIFY ADMINS OF CHANGE TO TICKET
-          Player[] players = Bukkit.getOnlinePlayers();
+          Collection<? extends Player> players = Bukkit.getOnlinePlayers();
           for(Player op: players){
             if(op.hasPermission("sht.admin") && plugin.getConfig().getBoolean("NotifyAdminOnTicketClose") && op != sender) {
               op.sendMessage(plugin.getMessage("TicketClosedADMIN").replace("&arg", ""+args[0]).replace("&admin", admin));
@@ -174,7 +175,7 @@ public class closeticket implements CommandExecutor {
             target.sendMessage(plugin.getMessage("TicketReopenedOWNER").replace("&arg", ""+id).replace("&admin", admin));
           }
           // INFORM ADMINS OF CHANGES TOT ICKET
-          Player[] players = Bukkit.getOnlinePlayers();
+          Collection<? extends Player> players = Bukkit.getOnlinePlayers();
           for(Player op: players){
             if(op.hasPermission("sht.admin") && plugin.getConfig().getBoolean("NotifyAdminOnTicketClose") && op != sender) {
               op.sendMessage(plugin.getMessage("TicketReopenedADMIN").replace("&arg", ""+id).replace("&admin", admin));

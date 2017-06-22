@@ -3,6 +3,7 @@ package me.odium.simplehelptickets.commands;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 
 import me.odium.simplehelptickets.DBConnection;
 import me.odium.simplehelptickets.SimpleHelpTickets;
@@ -142,7 +143,7 @@ public class taketicket implements CommandExecutor {
       // ASSIGN ADMIN
       stmt.executeUpdate("UPDATE SHT_Tickets SET admin='"+admin+"' WHERE id='"+id+"'");
       // NOTIFY -OTHER- ADMINS 
-      Player[] players = Bukkit.getOnlinePlayers();
+      Collection<? extends Player> players = Bukkit.getOnlinePlayers();
       for(Player op: players){
         if(op.hasPermission("sht.admin") && op != player) {
           op.sendMessage(plugin.getMessage("TakeTicketADMIN").replace("&arg", id).replace("&admin", admin));

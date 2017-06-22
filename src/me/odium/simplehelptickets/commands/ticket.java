@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collection;
 
 import me.odium.simplehelptickets.SimpleHelpTickets;
 import me.odium.simplehelptickets.DBConnection;
@@ -150,7 +151,7 @@ public class ticket implements CommandExecutor {
               // Message player and finish
               sender.sendMessage(plugin.getMessage("TicketOpen"));
               // Notify admin of new ticket
-              Player[] players = Bukkit.getOnlinePlayers();
+              Collection<? extends Player> players = Bukkit.getOnlinePlayers();
               for(Player onlinePlayer: players){ // for every player online
                 if(onlinePlayer.hasPermission("sht.admin") && onlinePlayer.getUniqueId().toString() != uuid) { // if admin perm & not ticket owner                     
                   onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
@@ -209,7 +210,7 @@ public class ticket implements CommandExecutor {
               // Message player and finish
               sender.sendMessage(plugin.getMessage("TicketOpen"));
               // Notify admin of new ticket
-              Player[] players = Bukkit.getOnlinePlayers();
+              Collection<? extends Player> players = Bukkit.getOnlinePlayers();
               for(Player onlinePlayer: players){ // for every player online
                 if(onlinePlayer.hasPermission("sht.admin")) {     // if admin permission                     
                   onlinePlayer.sendMessage(plugin.getMessage("TicketOpenADMIN").replace("%player", sender.getName()));
