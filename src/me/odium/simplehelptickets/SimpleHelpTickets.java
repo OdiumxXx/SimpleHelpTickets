@@ -59,7 +59,7 @@ public class SimpleHelpTickets extends JavaPlugin {
 		// Look for defaults in the jar
 		InputStream defConfigStream = getResource("output.yml");
 		if (defConfigStream != null) {
-			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(OutputConfigFile);
 			OutputConfig.setDefaults(defConfig);
 		}
 	}

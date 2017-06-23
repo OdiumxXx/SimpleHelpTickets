@@ -1,6 +1,6 @@
 name: SimpleHelpTickets
 main: me.odium.simplehelptickets.SimpleHelpTickets
-version: 1.4
+version: 1.4.1
 commands:
    sht:
       aliases: [helptickets, simplehelptickets]
